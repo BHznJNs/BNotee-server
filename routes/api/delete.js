@@ -4,7 +4,7 @@ const express = require("express")
 const router = express.Router()
 
 const DBFilePath = "./data/notes.db"
-function DBWrite(type, name) {}
+function DBEdit(type, name, callback) {}
 
 // api：上传笔记数据
 router.post("/api/delete", (req, res) => {
@@ -25,6 +25,8 @@ router.post("/api/delete", (req, res) => {
         fileType = "folder"
         fileName = file[0]
     }
+
+    DBEdit(fileType, fileName, (err) => {})
 })
 
 module.exports = router
