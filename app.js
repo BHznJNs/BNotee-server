@@ -1,5 +1,5 @@
 require("./script/readConf")
-require("./script/initialFileCreate")
+require("./script/initFileCreate")
 require("./script/noteList")
 require("./script/status")
 

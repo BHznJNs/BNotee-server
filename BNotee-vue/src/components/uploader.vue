@@ -92,9 +92,12 @@ export default {
             disabled: true,
             selected: null,
             addingFolder: false,
-            noteName: this.note.NM,
             password: "",
-            noteList: window.NoteList
+            noteList: [
+                    "项目",
+                    ["项目组", ["项目","项目"]],
+                    "项目"
+                ]//window.NoteList
             /* 
                 [
                     "项目",
@@ -111,13 +114,14 @@ export default {
         // 方法：上传当前笔记
         // 注：文件夹内文件上传前必须选择对应文件夹
         upload() {
-            const noteName = this.noteName
+            const noteName = this.note.NM
             let location, folderName
 
             if (this.selected) {
                 location = this.selected.loc.split(",")
                 // 若已选择文件夹，获取文件夹名
-                if (location.length > 1 && location[1] == "-1") {
+                const item = this.noteList[location[0]]
+                if (typeof item == "object") {
                     const folder = this.noteList[location[0]]
                     folderName = folder[0]
                 }
@@ -159,7 +163,9 @@ export default {
             }
             // 若选择文件夹
             const location = this.selected.loc.split(",")
-            if (location[1] == "-1") {
+
+            const item = this.noteList[location[0]]
+            if (typeof item == "object") {
                 alert("不能下载文件夹。")
                 return
             }
@@ -233,7 +239,13 @@ export default {
                     location,
                     password: this.password
                 }).then((res) => {
-                    console.log(res.data.noteList)
+                    // 若返回码为 0
+                    if (!res.data.code) {
+                        this.noteList = res.data.noteList
+                        EventBus.emit("show-msg", "文件删除成功。")
+                    } else {
+                        EventBus.emit("show-msg", res.data.msg)
+                    }
                 }).catch((err) => {
                     console.warn(err)
                     EventBus.emit("删除文件请求错误。")

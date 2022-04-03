@@ -17,20 +17,20 @@ try {
     writeFileSync(NoteDataPath, "[]")
 }
 // 创建数据库文件
-const DBFilePath = "./data/notes.db"
-try {
-    accessSync(DBFilePath, constants.R_OK | constants.W_OK)
-    console.log("File 'notes.db' Exist.")
-} catch {
-    writeFileSync(DBFilePath, "")
-    let db = new sqlite3.Database(DBFilePath)
-    db.serialize(() => {
-        db.run(`
-            create table notes (
-                name    text    not null,
-                json    text
-            );
-        `)
-    })
-    db.close()
-}
+// const DBFilePath = "./data/notes.db"
+// try {
+//     accessSync(DBFilePath, constants.R_OK | constants.W_OK)
+//     console.log("File 'notes.db' Exist.")
+// } catch {
+//     writeFileSync(DBFilePath, "")
+//     let db = new sqlite3.Database(DBFilePath)
+//     db.serialize(() => {
+//         db.run(`
+//             create table notes (
+//                 name    text    not null,
+//                 json    text
+//             );
+//         `)
+//     })
+//     db.close()
+// }

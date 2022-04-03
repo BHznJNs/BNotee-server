@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { computed } from "vue"
 import ToolBar from "./components/toolBar"
 import Uploader from "./components/uploader"
 import ControlBalls from "./components/controlBalls"
@@ -55,18 +56,8 @@ export default {
     provide() {
         return {
             note: this.note,
-            selectedNode: this.selectedNode
-        }
-    },
-    methods: {
-        toggleDarkMode() {
-            this.isDarkMode = !this.isDarkMode
-        },
-        toggleTouchMode() {
-            this.isTouchMode = !this.isTouchMode
-        },
-        toggleFullscreen() {
-            this.isFullscreen = !this.isFullscreen
+            selectedNode: this.selectedNode,
+            isTouchMode: computed(() => {return this.isTouchMode})
         }
     }
 }

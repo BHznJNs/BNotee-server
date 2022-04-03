@@ -13,7 +13,6 @@
             >
                 <floor-block
                     v-if="item.NT == 'floor'"
-                    :isTouchMode="isTouchMode"
                     :selected="item.SL"
                     :children="item.CTS"
                     :level="2"
@@ -21,7 +20,6 @@
                 />
                 <node-renderer
                     v-else
-                    :isTouchMode="isTouchMode"
                     :nodeObj="item"
                     :index="index"
                     :level="1"
@@ -63,7 +61,7 @@ export default {
             offset: false
         }
     },
-    props: ["isFullscreen", "isTouchMode"],
+    props: ["isFullscreen"],
     inject: ["note"],
     created() {
         // 设置按键事件监听

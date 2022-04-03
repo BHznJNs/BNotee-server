@@ -39,7 +39,7 @@
 
 <script>
 import EventBus from "../common/EventBus"
-import nodeObjReturner from "./mixin/nodeObjReturner"
+import nodeObjReturner from "../common/nodeObjReturner"
 
 export default {
     data() {
@@ -49,7 +49,6 @@ export default {
     },
     props: ["disabled"],
     inject: ["selectedNode"],
-    mixins: [nodeObjReturner],
     mounted() {
         EventBus.on("textfield-open", (from) => {
             this.commandFrom = from
@@ -67,7 +66,7 @@ export default {
             const tagName = this.$refs.selector.value
             const content = this.$refs.inputter.innerText
             // 定义返回对象
-            const returnObj = this.returnObj(tagName, content)
+            const returnObj = nodeObjReturner(tagName, content)
             // 传值
             EventBus.emit("textfield-return-" + this.commandFrom, returnObj)
 

@@ -21,7 +21,6 @@
             >
                 <list-block
                     v-if="item.NT == 'list'"
-                    :isTouchMode="isTouchMode"
                     :isOrdered="item.OL"
                     :selected="item.SL"
                     :children="item.CTS"
@@ -70,10 +69,10 @@ export default {
         }
     },
     props: [
-        "isTouchMode",
         "children", "isOrdered",
         "location", "selected"
     ],
+    inject: ["isTouchMode"],
     mixins: [blockHoverEvent]
 }
 </script>

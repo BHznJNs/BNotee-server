@@ -1,25 +1,6 @@
-const sqlite3 = require("sqlite3")
+const NoteDB = require("../../script/db")
 const express = require("express")
 const router = express.Router()
-
-const DBFilePath = "data/notes.db"
-// 函数：读取数据库
-function DBRead(noteName, callback) {
-    let db = new sqlite3.Database(DBFilePath)
-    db.serialize(() => {
-        db.get(`
-            select json from notes
-            where name == '${noteName}';
-        `, (err, res) => {
-            if (err) {
-                callback(null, err)
-            } else {
-                callback(res.json, null)
-            }
-        })
-    })
-    db.close()
-}
 
 // api：获取笔记数据
 router.post("/api/download", (req, res) => {
@@ -41,13 +22,13 @@ router.post("/api/download", (req, res) => {
     }
 
 
-    DBRead(name, (content, err) => {
+    NoteDB.read(name, (content, err) => {
         if (!err) {
             let statue = globalThis.Status[0]
             statue.noteContent = content
             res.send(statue)
         } else {
-            console.log(err)
+            console.warn(err)
             res.send(globalThis.Status[2])
         }
     })

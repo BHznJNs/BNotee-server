@@ -27,12 +27,11 @@
 </template>
 
 <script>
-import nodeObjReturner from "./mixin/nodeObjReturner"
+import nodeObjReturner from "../common/nodeObjReturner"
 
 export default {
     props: ["isAdding"],
     emits: ["return-node"],
-    mixins: [nodeObjReturner],
     methods: {
         focus() {
             const textfield = this.$refs.inputter
@@ -46,7 +45,7 @@ export default {
             const tagName = selector.value
             const content = textfield.innerText
             // 返回对象
-            const returnObj = this.returnObj(tagName, content)
+            const returnObj = nodeObjReturner(tagName, content)
 
             this.$emit("return-node", returnObj)
 

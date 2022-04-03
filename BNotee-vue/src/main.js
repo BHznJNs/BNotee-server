@@ -10,6 +10,8 @@ import "./assets/css/materialIcons.css"
 import "./assets/css/shadows.css"
 import "./assets/css/button.css"
 import "./assets/css/checkbox.css"
+import './registerServiceWorker'
 
 const app = createApp(App)
+app.config.unwrapInjectedRef = true
 app.mount("#app")

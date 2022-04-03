@@ -1,30 +1,7 @@
 const saveNoteList = require("../../script/saveNoteList")
-const sqlite3 = require("sqlite3")
+const NoteDB = require("../../script/db")
 const express = require("express")
 const router = express.Router()
-
-const DBFilePath = "./data/notes.db"
-// 函数：写入数据库
-function DBWrite(isNew, noteName, noteContent, callback) {
-    const db = new sqlite3.Database(DBFilePath)
-
-    db.serialize(() => {
-        if (isNew) {  // 若为新笔记
-            db.run(`
-                insert into notes (name, json)
-                values ('${noteName}', '${noteContent}');
-            `)
-        } else { // 若笔记列表中已存在
-            db.run(`
-                update notes set json = '${noteContent}'
-                where name = '${noteName}';
-            `)
-        }
-    })
-    db.close((err) => {
-        callback(err)
-    })
-}
 
 // api：上传笔记数据
 router.post("/api/upload", (req, res) => {
@@ -58,17 +35,20 @@ router.post("/api/upload", (req, res) => {
         }
     }
 
-    DBWrite(isNew, name, noteContent, (err) => {
+    NoteDB.write(isNew, name, noteContent, (err) => {
+        // 操作成功
         if (!err) {
+            saveNoteList()
+
             let status = globalThis.Status[0]
             status.isNew = isNew
             status.noteList = globalThis.NoteList
             res.send(status)
         } else {
+            console.warn(err)
             res.send(globalThis.Status[3])
         }
     })
-    saveNoteList()
 })
 
 module.exports = router

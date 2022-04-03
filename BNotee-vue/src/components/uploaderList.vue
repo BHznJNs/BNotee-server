@@ -15,7 +15,7 @@
                 <div
                     class="folder-name" 
                     @click="showToggle($event)"
-                    :data-location="[index, -1]"
+                    :data-location="index"
                 >
                     <i class="item-avatar material-icons"
                         @click.stop="select($event)"

@@ -12,7 +12,7 @@
         <!-- 触屏模式切换 -->
         <div class="ball btn"
             @click="$emit('toggle-touchMode')"
-            :class="{ 'back': isTouchMode }"
+            :class="{ 'black': isTouchMode }"
         >
             <i class="material-icons">touch_app</i>
         </div>
@@ -82,7 +82,7 @@ export default {
                 box-shadow: var(--shadow-1);
         transition: background-color .2s, box-shadow .4s, -webkit-box-shadow .4s;
     }
-    .ball.back {
+    .ball.black {
         color: white !important;
         background-color: #333 !important;
     }

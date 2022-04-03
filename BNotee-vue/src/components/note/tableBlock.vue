@@ -39,9 +39,10 @@ import blockHoverEvent from "../mixin/blockHoverEvent"
 
 export default {
     props: [
-        "isTouchMode", "selected",
+        "selected",
         "children", "location"
     ],
+    inject: ["isTouchMode"],
     mixins: [blockHoverEvent],
     components: {
         TableRow, BlockControls

@@ -17,7 +17,6 @@
         >
             <floor-block
                 v-if="item.NT == 'floor'"
-                :isTouchMode="isTouchMode"
                 :children="item.CTS"
                 :selected="item.SL"
                 :level="level + 1"
@@ -26,7 +25,6 @@
             />
             <node-renderer
                 v-else
-                :isTouchMode="isTouchMode"
                 :nodeObj="item"
                 :index="index"
                 :level="level"
@@ -55,10 +53,10 @@ export default {
         BlockControls, NodeRenderer
     },
     props: [
-        "isTouchMode",
         "level", "location",
         "children", "selected"
     ],
+    inject: ["isTouchMode"],
     mixins: [blockHoverEvent]
 }
 </script>
