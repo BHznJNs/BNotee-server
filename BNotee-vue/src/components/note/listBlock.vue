@@ -30,7 +30,7 @@
                 />
                 <basic-node
                     v-else
-                    :tagName="item.NT == 'h' ? 'h4' : item.NT"
+                    :tagName="'li'"
                     :content="item.CT"
                     :color="item.CL"
                     :selected="item.SL"
@@ -57,6 +57,11 @@ import { h } from "vue"
 
 export default {
     name: "list-block",
+    data() {
+        return {
+            isNested: null
+        }
+    },
     components: {
         BasicNode, BlockControls,
         listChild: {
@@ -75,15 +80,13 @@ export default {
     ],
     inject: ["isTouchMode"],
     mixins: [blockHoverEvent],
-    computed: {
+    mounted() {
         // 是否为嵌套列表
-        isNested() {
-            const parentNode = this.$el.parentNode
-            return (
-                parentNode.tagName == "OL" ||
-                parentNode.tagName == "UL"
-            )
-        }
+        const parentNode = this.$el.parentNode
+        this.isNested = (
+            parentNode.tagName == "OL" ||
+            parentNode.tagName == "UL"
+        )
     }
 }
 </script>
