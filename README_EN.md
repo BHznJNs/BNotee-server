@@ -5,6 +5,18 @@ The server version of [BNotee](https://github.com/BHznJNs/BNotee).
 This is a notebook app that you can deploy the
 server side on you PC and you can edit your notes by any device with blowser(no IE ;>).
 
+## Usage
+
+``` bash
+git clone https://github.com/BHznJNs/BNotee-server.git
+
+cd BNotee-server
+
+npm install
+
+npm start
+```
+
 ## Finished
 
 - Headings || `标题`
@@ -12,6 +24,7 @@ server side on you PC and you can edit your notes by any device with blowser(no 
 - Horizontal Rules ||  `割线`
 - Unordered/Ordered List || `序列` / `乱列`
 - Table || `表格`
+- Details || `详情`
 - Dark Mode
 - Fullscreen
 - Touch Mode
@@ -20,4 +33,3 @@ server side on you PC and you can edit your notes by any device with blowser(no 
 ## Todo
 
 - [ ] Code Block(Python、JavaScript、C)
-- [ ] Detail Block Component
