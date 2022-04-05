@@ -1,4 +1,4 @@
-<!-- 列表块组件，其中仅允许加入 标题、列表块、列表项节点、割线 -->
+<!-- 列表块组件，其中仅允许加入 列表块、列表项节点 -->
 <template>
     <div
         class="list"
@@ -6,7 +6,8 @@
             'shadow-2': selected,
             'hover': hover,
             'empty': !children.length,
-            'touch-mode': isTouchMode
+            'touch-mode': isTouchMode,
+            'nested': isNested
          }"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
@@ -73,6 +74,16 @@ export default {
         "location", "selected"
     ],
     inject: ["isTouchMode"],
-    mixins: [blockHoverEvent]
+    mixins: [blockHoverEvent],
+    computed: {
+        // 是否为嵌套列表
+        isNested() {
+            const parentNode = this.$el.parentNode
+            return (
+                parentNode.tagName == "OL" ||
+                parentNode.tagName == "UL"
+            )
+        }
+    }
 }
 </script>

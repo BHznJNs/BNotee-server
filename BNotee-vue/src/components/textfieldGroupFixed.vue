@@ -4,27 +4,28 @@
         class="textfield-group fixed-component fixed"
         v-show="!disabled"
     >
-        <select class="selector" ref="selector">
+        <select
+            class="selector" ref="selector"
+            v-show="!isFromNestedList"
+        >
             <option value="h">标题</option>
-            <option value="p"
-                v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
-            >段落</option>
+            <option value="p">段落</option>
             <option value="hr">割线</option>
-            <option value="floor"
-                v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
-            >层次</option>
+            <option value="floor">层次</option>
             <option value="ol">序列</option>
             <option value="ul">乱列</option>
-            <option value="li"
-                v-show="commandFrom == 'list' || selectedNode.tagName == 'li'"
-            >列项</option>
-            <option value="table"
-                v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
-            >表格</option>
-            <option value="details"
-                v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
-            >详情</option>
+            <option value="table">表格</option>
+            <option value="details">详情</option>
         </select>
+        <select
+            class="selector" ref="selector4List"
+            v-show="isFromNestedList"
+        >
+            <option value="li">列项</option>
+            <option value="ol">序列</option>
+            <option value="ul">乱列</option>
+        </select>
+
         <div
             class="textfield"
             contenteditable="true"
@@ -52,13 +53,17 @@ export default {
     },
     props: ["disabled"],
     inject: ["selectedNode"],
+    computed: {
+        // 判断是否来自嵌套列表或列表内
+        isFromNestedList() {
+            return this.commandFrom == "list" || 
+                   ["li", "nestedList"]
+                   .includes(this.selectedNode.tagName)
+        }
+    },
     mounted() {
         EventBus.on("textfield-open", (from) => {
             this.commandFrom = from
-            this.$refs.inputter.focus()
-        })
-        EventBus.on("textfield-close", () => {
-            this.commandFrom = null
         })
     },
     methods: {
@@ -66,7 +71,10 @@ export default {
         closeTextfield() {
             this.$emit("close", "textfieldGroup")
             // 获取对应数据
-            const tagName = this.$refs.selector.value
+            const tagName = !this.isFromNestedList ?
+                            this.$refs.selector.value :
+                            this.$refs.selector4List.value
+            // const tagName = this.$refs.selector.value
             const content = this.$refs.inputter.innerText
             // 定义返回对象
             const returnObj = nodeObjReturner(tagName, content)

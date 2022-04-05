@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.f473d012089d55a29dc84045fb157c2e.js"
+  "/precache-manifest.fe557bbb083b5e2d8be3f10c4f67f07a.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "BNotee"});

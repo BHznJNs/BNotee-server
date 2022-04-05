@@ -74,6 +74,13 @@ export default {
 
                 this.selectedNode.location = this.location
                 this.selectedNode.type = this.parentType
+                // 若父组件为列表
+                if (this.parentType == "list") {
+                    this.selectedNode.tagName =
+                        (this.$parent.isNested) ?
+                            "nestedList" :
+                            "notNestedList"
+                }
 
                 if (this.parentType == "table") {
                     EventBus.emit("table-selected")
@@ -81,6 +88,7 @@ export default {
             } else { // 若取消选择
                 this.selectedNode.location = null
                 this.selectedNode.type = null
+                this.selectedNode.tagName = null
             }
         },
         // 方法：打开全局输入组
@@ -96,24 +104,26 @@ export default {
                 // 插入新行
                 this.getThisObj.CTS.push(newRow)
             } else if (this.parentType == "details") {
+                // 若为 详情 组件， 添加 子段落元素
                 this.getThisObj.CTS.push({
                     CT: "",
                     CL: "#333",
                     SL: false
                 })
-            } else {
-                EventBus.emit("note-offset")
-                EventBus.emit("textfield-open", this.parentType)
+            } else { // List Block || Floor Block
                 // 添加事件监听
-                EventBus.off("textfield-return" + this.parentType)
-                EventBus.on("textfield-return" + this.parentType, (obj) => {
+                EventBus.off("textfield-return-" + this.parentType)
+                EventBus.on("textfield-return-" + this.parentType, (obj) => {
                     // 向父元素添加节点
                     if (obj) {
                         this.getThisObj.CTS.push(obj)
                     }
                     // 移除事件监听
-                    EventBus.off("textfield-return-block")
+                    EventBus.off("textfield-return-" + this.parentType)
                 })
+
+                EventBus.emit("note-offset")
+                EventBus.emit("textfield-open", this.parentType)
             }
         }
     }

@@ -81,7 +81,26 @@ export default {
                     CT: "这是一个列表项",
                     CL: "#333",
                     SL: false
-                }
+                },
+                {
+                    NT: "list",
+                    OL: false,
+                    SL: false,
+                    CTS: [
+                        {
+                            NT: "li",
+                            CT: "嵌套列表内一个列表项",
+                            CL: "#333",
+                            SL: false
+                        },
+                        {
+                            NT: "li",
+                            CT: "嵌套列表内一个列表项",
+                            CL: "#333",
+                            SL: false
+                        }
+                    ]
+                },
             ]
         },
         {

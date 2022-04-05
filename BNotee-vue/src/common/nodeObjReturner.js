@@ -20,29 +20,36 @@ export default (tagName, content) => {
         case "hr":
             break
         case "floor":
-            obj.CTS = []
-            if (content) {
-                obj.CTS.push({
-                    NT: "h",
-                    CT: content,
-                    CL: "#333",
-                    SL: false
-                })
-            }
+            obj.CTS = [{
+                NT: "h",
+                CT: content,
+                CL: "#333",
+                SL: false
+            }]
             break
         case "ol":
             obj.NT = "list"
-            obj.CTS = []
+            obj.CTS = [{
+                NT: "li",
+                CT: content,
+                CL: "#333",
+                SL: false   
+            }]
             obj.OL = true
             break
         case "ul":
             obj.NT = "list"
-            obj.CTS = []
+            obj.CTS = [{
+                NT: "li",
+                CT: content,
+                CL: "#333",
+                SL: false   
+            }]
             obj.OL = false
             break
         case "table":
             obj.CTS = [
-                ["", "", "", ""],
+                [content, "", "", ""],
                 ["", "", "", ""]
             ]
         break

@@ -46,18 +46,12 @@ export default {
             this.tableSetterDisabled = true
             this.textfieldGroupDisabled = false
         })
-        EventBus.on("textfield-close", () => {
-            this.textfieldGroupDisabled = true
-        })
 
         // Colors
         EventBus.on("colors-open", () => {
             this.tableSetterDisabled = true
             this.textfieldGroupDisabled = true
             this.colorsDisabled = false
-        })
-        EventBus.on("colors-close", () => {
-            this.colorsDisabled = true
         })
 
         // Table Setter
@@ -66,8 +60,13 @@ export default {
             this.textfieldGroupDisabled = true
             this.tableSetterDisabled = false
         })
-        EventBus.on("tableSetter-close", () => {
+
+
+        EventBus.on("fixedComponents-close", () => {
+            this.colorsDisabled = true
+            this.textfieldGroupDisabled = true
             this.tableSetterDisabled = true
+            EventBus.emit("note-offset-cancel")
         })
     }
 }

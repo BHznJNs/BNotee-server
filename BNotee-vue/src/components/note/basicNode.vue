@@ -22,9 +22,8 @@ export default {
         // 方法：右键节点时，触发选择节点事件
         selectEvent() {
             if (this.selected) {
-                // 关闭全局输入组 及 改色器
-                EventBus.emit("textfield-close")
-                EventBus.emit("colors-close")
+                // 关闭全局组件
+                EventBus.emit("fixedComponents-close")
                 // 如果节点已被选择，取消选择
                 this.selectedNode.location = null
                 this.selectedNode.type = null
