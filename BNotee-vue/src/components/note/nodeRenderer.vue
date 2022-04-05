@@ -4,6 +4,7 @@ import Heading from "./heading"
 import BasicNode from "./basicNode"
 import ListBlock from "./listBlock"
 import TableBlock from "./tableBlock"
+import DetailBlock from "./detailBlock"
 
 export default {
     components: {
@@ -35,6 +36,11 @@ export default {
             case "table":
                 nodeType = TableBlock
                 nodeProps.children= this.nodeObj.CTS
+                break
+            case "details":
+                nodeType = DetailBlock
+                nodeProps.summary = this.nodeObj.SUM
+                nodeProps.children = this.nodeObj.CTS
                 break
             default:
                 nodeType = BasicNode

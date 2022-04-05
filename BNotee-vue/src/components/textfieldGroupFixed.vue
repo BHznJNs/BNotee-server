@@ -21,6 +21,9 @@
             <option value="table"
                 v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
             >表格</option>
+            <option value="details"
+                v-show="commandFrom != 'list' && selectedNode.tagName != 'li'"
+            >详情</option>
         </select>
         <div
             class="textfield"
@@ -61,7 +64,7 @@ export default {
     methods: {
         // 方法：关闭文本框，并将值返回给父节点
         closeTextfield() {
-            EventBus.emit("note-offset-cancel")
+            this.$emit("close", "textfieldGroup")
             // 获取对应数据
             const tagName = this.$refs.selector.value
             const content = this.$refs.inputter.innerText
@@ -70,7 +73,6 @@ export default {
             // 传值
             EventBus.emit("textfield-return-" + this.commandFrom, returnObj)
 
-            EventBus.emit("textfield-close")
             this.$refs.inputter.blur()
             this.$refs.inputter.innerText = ""
         }

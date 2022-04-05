@@ -70,7 +70,7 @@
                 @click="readNote"
             >
                 <i class="material-icons file">input
-                    <input id="file-uploader" type="file" accept="application/json">
+                    <input ref="fileUploader" type="file" accept="application/json">
                 </i>
             </div>
         </div>
@@ -87,7 +87,7 @@ export default {
     inject: ["note", "selectedNode"],
     mixins: [getNodeObj],
     mounted() {
-        const fileUploader = document.querySelector("#file-uploader")
+        const fileUploader = this.$refs.fileUploader
         // 当选择文件
         fileUploader.addEventListener("change", () => {
             // 文件读取
@@ -113,6 +113,9 @@ export default {
         },
         // 方法：插入节点
         insertNode(obj) {
+            if (!obj) {
+                return
+            }
             const location = this.selectedNode.location
             // 如果未选择节点
             if (!location) {
@@ -156,8 +159,6 @@ export default {
             this.tableSetter = true
             EventBus.emit("note-offset")
             EventBus.emit("tableSetter-open")
-            // EventBus.emit("colors-close")
-            // EventBus.emit("textfield-close")
         },
         // 方法：打开颜色选择器
         colorsOpen() {
@@ -182,7 +183,7 @@ export default {
         },
         // 方法：读取本地笔记
         readNote() {
-            const fileUploader = document.querySelector("#file-uploader")
+            const fileUploader = this.$refs.fileUploader
             fileUploader.click()
         }
     }

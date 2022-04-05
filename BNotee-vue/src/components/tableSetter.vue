@@ -31,7 +31,7 @@
 
         <div
             class="closer"
-            @click="close"
+            @click="$emit('close', 'tableSetter')"
         >
             <i class="material-icons">close</i>
         </div>
@@ -39,7 +39,7 @@
     </transition>
 </template>
 <script>
-import EventBus from "../common/EventBus"
+import EventBus from '../common/EventBus'
 import getNodeObj from "./mixin/getNodeObj"
 
 export default {
@@ -60,8 +60,21 @@ export default {
                 this.tableSet()
             }
         })
+        EventBus.on("table-selected", this.tableGet)
     },
     methods: {
+        tableGet() {
+            // 获取目标表格节点
+            this.getNodeObj({
+                location: this.selectedNode.location,
+                callback: (nodeArray, index) => {
+                    this.targetNode = nodeArray[index]
+                }
+            })
+            // 获取目标行数、列数
+            this.row = this.targetNode.CTS.length
+            this.col = this.targetNode.CTS[0].length
+        },
         tableSet() {
             //    目标节点行数、列数
             const initialRow = this.targetNode.CTS.length
@@ -100,25 +113,12 @@ export default {
                     this.targetNode.CTS.pop()
                 }
             }
-        },
-        close() {
-            EventBus.emit("note-offset-cancel")
-            EventBus.emit("tableSetter-close")
         }
     },
     watch: {
-        show(newVal) {
-            if (newVal) {
-                // 获取目标表格节点
-                this.getNodeObj({
-                    location: this.selectedNode.location,
-                    callback: (nodeArray, index) => {
-                        this.targetNode = nodeArray[index]
-                    }
-                })
-                // 获取目标行数、列数
-                this.row = this.targetNode.CTS.length
-                this.col = this.targetNode.CTS[0].length
+        disabled(newVal) {
+            if (!newVal) {
+                this.tableGet()
             } else {
                 this.targetNode = null
             }

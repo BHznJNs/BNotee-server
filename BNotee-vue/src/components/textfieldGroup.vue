@@ -11,6 +11,7 @@
             <option value="ol">序列</option>
             <option value="ul">乱列</option>
             <option value="table">表格</option>
+            <option value="details">详情</option>
         </select>
         <div
             class="textfield"

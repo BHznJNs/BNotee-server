@@ -1,8 +1,17 @@
 <template>
    <div>
-        <textfield-group-fixed :disabled="textfieldgroupDisabled"/>
-        <colors :disabled="colorsDisabled"/>
-        <table-setter :disabled="tableSetterDisabled"/>
+        <textfield-group-fixed
+            @close="close"
+            :disabled="textfieldGroupDisabled"
+        />
+        <colors
+            @close="close"
+            :disabled="colorsDisabled"
+        />
+        <table-setter
+            @close="close"
+            :disabled="tableSetterDisabled"
+        />
    </div>
 </template>
 
@@ -15,7 +24,7 @@ import EventBus from "../common/EventBus"
 export default {
     data() {
         return {
-            textfieldgroupDisabled: true,
+            textfieldGroupDisabled: true,
             colorsDisabled: true,
             tableSetterDisabled: true
         }
@@ -24,21 +33,27 @@ export default {
         TextfieldGroupFixed,
         Colors, TableSetter
     },
+    methods: {
+        close(component) {
+            this[component + "Disabled"] = true
+            EventBus.emit("note-offset-cancel")
+        }
+    },
     mounted() {
         // textfield
         EventBus.on("textfield-open", () => {
             this.colorsDisabled = true
             this.tableSetterDisabled = true
-            this.textfieldgroupDisabled = false
+            this.textfieldGroupDisabled = false
         })
         EventBus.on("textfield-close", () => {
-            this.textfieldgroupDisabled = true
+            this.textfieldGroupDisabled = true
         })
 
         // Colors
         EventBus.on("colors-open", () => {
             this.tableSetterDisabled = true
-            this.textfieldgroupDisabled = true
+            this.textfieldGroupDisabled = true
             this.colorsDisabled = false
         })
         EventBus.on("colors-close", () => {
@@ -48,7 +63,7 @@ export default {
         // Table Setter
         EventBus.on("tableSetter-open", () => {
             this.colorsDisabled = true
-            this.textfieldgroupDisabled = true
+            this.textfieldGroupDisabled = true
             this.tableSetterDisabled = false
         })
         EventBus.on("tableSetter-close", () => {

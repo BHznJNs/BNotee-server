@@ -7,7 +7,7 @@
             <!-- Closer -->
             <div
                 class="closer shadow-1"
-                @click="() => {disabled = true}"
+                @click="disabled = true"
             >
                 <i class="material-icons">close</i>
             </div>
@@ -80,12 +80,14 @@
 </template>
 <script>
 import UploaderList from "./uploaderList"
-import TextfieldGroup from './textfieldGroup'
+import TextfieldGroup from "./textfieldGroup"
+import getData from "./mixin/getData"
 import EventBus from "../common/EventBus"
 import axios from "axios"
 
 export default {
     components: { UploaderList, TextfieldGroup },
+    mixins: [getData],
     inject: ["note"],
     data() {
         return {
@@ -93,11 +95,7 @@ export default {
             selected: null,
             addingFolder: false,
             password: "",
-            noteList: [
-                    "项目",
-                    ["项目组", ["项目","项目"]],
-                    "项目"
-                ]//window.NoteList
+            noteList: []
             /* 
                 [
                     "项目",
@@ -117,25 +115,24 @@ export default {
             const noteName = this.note.NM
             let location, folderName
 
+            // 若选择项目
             if (this.selected) {
                 location = this.selected.loc.split(",")
-                // 若已选择文件夹，获取文件夹名
+
                 const item = this.noteList[location[0]]
+                // 若已选择文件夹，获取文件夹名
                 if (typeof item == "object") {
                     const folder = this.noteList[location[0]]
                     folderName = folder[0]
                 }
             }
 
-            // console.log(noteName, folderName)
-
             // 上传
-            axios.post("api/upload", {
+            axios.post("/api/upload", {
                 note: JSON.stringify(this.note),
                 location, noteName, folderName,
                 password: this.password
             }).then((res) => {
-                console.log(res)
 
                 // 若返回码为 0
                 if (!res.data.code) {
@@ -161,17 +158,18 @@ export default {
                 alert("请选择文件！")
                 return
             }
-            // 若选择文件夹
+            
             const location = this.selected.loc.split(",")
-
+            const fileInfo = this.getData(location)
             const item = this.noteList[location[0]]
-            if (typeof item == "object") {
+            // 若选择文件夹
+            if (location.length == 1 && typeof item == "object") {
                 alert("不能下载文件夹。")
                 return
             }
 
-            axios.post("api/download", {
-                location,
+            axios.post("/api/download", {
+                location, fileInfo,
                 password: this.password
             }).then((res) => {
                 // 若返回码为 0
@@ -182,12 +180,16 @@ export default {
                     if (toChange) {
                         const resJsonStr = res.data.noteContent
                         const resNote = JSON.parse(resJsonStr)
-                        this.note = resNote
+                        this.note.NM = resNote.NM
+                        this.note.CTS = resNote.CTS
 
                         // 选中对应文件夹
                         const folderLoc = location[0]
-                        this.$refs.UploaderList.selFolder(folderLoc)
+                        this.$refs.uploaderList.selFolder(folderLoc)
                     }
+                } else if (res.data.code == 5) {
+                        this.noteList = res.data.noteList
+                        EventBus.emit("show-msg", res.data.msg)
                 } else { // 若返回码不为 0
                     EventBus.emit("show-msg", res.data.msg)
                 }
@@ -211,7 +213,7 @@ export default {
             }
             const folderName = obj.CT
 
-            axios.post("api/create", {
+            axios.post("/api/create", {
                 folderName,
                 password: this.password
             }).then((res) => {
@@ -234,15 +236,19 @@ export default {
             const toContinue = confirm("此操作无法撤销，你确定吗？")
             if (toContinue) {
                 const location = this.selected.loc.split(",")
+                const fileInfo = this.getData(location)
 
-                axios.post("api/delete", {
-                    location,
+                axios.post("/api/delete", {
+                    location, fileInfo,
                     password: this.password
                 }).then((res) => {
                     // 若返回码为 0
                     if (!res.data.code) {
                         this.noteList = res.data.noteList
                         EventBus.emit("show-msg", "文件删除成功。")
+                    } else if (res.data.code == 5) {
+                        this.noteList = res.data.noteList
+                        EventBus.emit("show-msg", res.data.msg)
                     } else {
                         EventBus.emit("show-msg", res.data.msg)
                     }
@@ -256,6 +262,16 @@ export default {
     mounted() {
         EventBus.on("open-uploader", () => {
             this.disabled = false
+
+            // 若笔记列表为空
+            if (!this.noteList.length) {
+                const timestamp = new Date().getTime()
+                // 获取笔记列表
+                axios.get(`/api/note-list?timestamp=${timestamp}`)
+                .then((res) => {
+                    this.noteList = res.data.noteList
+                })
+            }
         })
     }
 }

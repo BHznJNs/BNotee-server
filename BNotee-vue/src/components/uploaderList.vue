@@ -14,11 +14,11 @@
                 <!-- 文件夹名 -->
                 <div
                     class="folder-name" 
-                    @click="showToggle($event)"
+                    @click="showToggle"
                     :data-location="index"
                 >
                     <i class="item-avatar material-icons"
-                        @click.stop="select($event)"
+                        @click.stop="select"
                     >folder_open</i>
                     <span class="item-content">{{ item[0] }}</span>
                 </div>
@@ -26,7 +26,7 @@
                     <!-- 文件夹项 -->
                     <li class="folder-item" :key="item_.id"
                         v-for="(item_, index_) in item[1]"
-                        @click="select($event)"
+                        @click="select"
                         :data-location="[index, index_]"
                     >
                         <i class="item-avatar material-icons">assignment</i>
@@ -37,7 +37,7 @@
 
             <!-- 列表项 -->
             <li v-else :data-location="index"
-                class="list-item" @click="select($event)"
+                class="list-item" @click="select"
             >
                 <i class="item-avatar material-icons">assignment</i>
                 <span class="item-content">{{ item }}</span>

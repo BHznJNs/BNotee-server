@@ -1,5 +1,4 @@
-const saveNoteList = require("../../script/saveNoteList")
-const NoteDB = require("../../script/db")
+const NoteDB = require("../script/db")
 const express = require("express")
 const router = express.Router()
 
@@ -24,7 +23,7 @@ router.post("/api/upload", (req, res) => {
         }
     } else { // 若在文件夹中
         const folderLoc = location[0]
-        const folder = globalThis.NoteList[folderLoc]
+        const folder = globalThis.NoteList[folderLoc][1]
 
         name = `${folderName}/${noteName}`
 
@@ -38,8 +37,6 @@ router.post("/api/upload", (req, res) => {
     NoteDB.write(isNew, name, noteContent, (err) => {
         // 操作成功
         if (!err) {
-            saveNoteList()
-
             let status = globalThis.Status[0]
             status.isNew = isNew
             status.noteList = globalThis.NoteList

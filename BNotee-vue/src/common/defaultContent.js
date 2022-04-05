@@ -1,13 +1,13 @@
 /*
     NM --> Name
     NT --> Node Type
-    CT --> content
-    CTS --> contents
-    CL --> color
-    LV --> level
-    SL --> selected
+    CT --> Content
+    CTS --> Contents
+    CL --> Color
+    LV --> Level
+    SL --> Selected
     OL --> isOrdered
-    CO --> column
+    SUM --> Summary
 */
 export default {
     NM: "Example",
@@ -84,13 +84,29 @@ export default {
                 }
             ]
         },
-
         {
             NT: "table",
             SL: false,
             CTS: [
                 ["表格项","表格项","表格项","表格项"],
                 ["表格项","表格项","表格项","表格项"]
+            ]
+        },
+        {
+            NT: "details",
+            SL: false,
+            SUM: "这是一个详情块",
+            CTS: [
+                {
+                    CT: "这是一个段落",
+                    CL: "#333",
+                    SL: false
+                },
+                {
+                    CT: "这是一个段落",
+                    CL: "#333",
+                    SL: false
+                }
             ]
         }
 

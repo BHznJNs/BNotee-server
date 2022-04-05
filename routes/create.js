@@ -1,4 +1,3 @@
-const saveNoteList = require("../../script/saveNoteList")
 const express = require("express")
 const router = express.Router()
 
@@ -35,7 +34,6 @@ router.post("/api/create", (req, res) => {
             folderName,
             []
         ])
-        saveNoteList()
 
         let status = globalThis.Status[0]
         status.noteList = globalThis.NoteList

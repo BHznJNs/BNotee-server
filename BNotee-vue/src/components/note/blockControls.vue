@@ -74,6 +74,10 @@ export default {
 
                 this.selectedNode.location = this.location
                 this.selectedNode.type = this.parentType
+
+                if (this.parentType == "table") {
+                    EventBus.emit("table-selected")
+                }
             } else { // 若取消选择
                 this.selectedNode.location = null
                 this.selectedNode.type = null
@@ -91,12 +95,18 @@ export default {
                 }
                 // 插入新行
                 this.getThisObj.CTS.push(newRow)
+            } else if (this.parentType == "details") {
+                this.getThisObj.CTS.push({
+                    CT: "",
+                    CL: "#333",
+                    SL: false
+                })
             } else {
                 EventBus.emit("note-offset")
-                EventBus.emit("textfield-open", "block")
+                EventBus.emit("textfield-open", this.parentType)
                 // 添加事件监听
-                EventBus.off("textfield-return-block")
-                EventBus.on("textfield-return-block", (obj) => {
+                EventBus.off("textfield-return" + this.parentType)
+                EventBus.on("textfield-return" + this.parentType, (obj) => {
                     // 向父元素添加节点
                     if (obj) {
                         this.getThisObj.CTS.push(obj)
@@ -130,6 +140,7 @@ export default {
     }
     .controls.disabled {
         height: 0 !important;
+        margin: 0;
     }
     .controls.disabled * {
         opacity: 0;

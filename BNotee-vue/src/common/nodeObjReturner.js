@@ -25,7 +25,7 @@ export default (tagName, content) => {
                 obj.CTS.push({
                     NT: "h",
                     CT: content,
-                    CL: null,
+                    CL: "#333",
                     SL: false
                 })
             }
@@ -46,6 +46,16 @@ export default (tagName, content) => {
                 ["", "", "", ""]
             ]
         break
+        case "details":
+            obj.SUM = content
+            obj.CTS = [
+                {
+                    CT: "",
+                    CL: "#333",
+                    SL: false
+                }
+            ]
+            break
     }
 
     return obj

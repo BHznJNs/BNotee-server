@@ -18,5 +18,9 @@ globalThis.Status = [
     {
         code: 4,
         msg: "文件夹已存在。"
+    },
+    {
+        code: 5,
+        msg: "文件不存在。"
     }
 ]

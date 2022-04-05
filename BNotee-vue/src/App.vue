@@ -30,7 +30,7 @@ import ControlBalls from "./components/controlBalls"
 import Note from "./components/note"
 import FixedComponents from "./components/fixedComponents"
 import Msgbar from "./components/msgbar"
-import defaultContent from "./assets/defaultContent"
+import defaultContent from "./common/defaultContent"
 
 export default {
     name: 'App',

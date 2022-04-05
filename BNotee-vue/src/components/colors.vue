@@ -18,7 +18,7 @@
         </div>
         <div
             class="closer"
-            @click="close"
+            @click="$emit('close', 'colors')"
         >
             <i class="material-icons">close</i>
         </div>
@@ -28,7 +28,6 @@
 
 <script>
 import getNodeObj from "./mixin/getNodeObj"
-import EventBus from "../common/EventBus"
 
 export default {
     data() {
@@ -40,34 +39,19 @@ export default {
             ],
             colorValue: "",
             timeout: null,
-            targetNode: null
         }
     },
     props: ["disabled"],
     inject: ["selectedNode"],
     mixins: [getNodeObj],
-    mounted() {
-        // 当被唤起时
-        EventBus.on("colors-open", () => {
+    methods: {
+        setColor(color) {
             this.getNodeObj({
                 location: this.selectedNode.location,
                 callback: (nodeArray, index) => {
-                    this.targetNode = nodeArray[index]
+                    nodeArray[index].CL = color
                 }
             })
-        })
-        // 关闭时
-        EventBus.on("colors-close", () => {
-            this.targetNode = null
-        })
-    },
-    methods: {
-        setColor(color) {
-            this.targetNode.CL = color
-        },
-        close() {
-            EventBus.emit("colors-close")
-            EventBus.emit("note-offset-cancel")
         }
     },
     watch: {

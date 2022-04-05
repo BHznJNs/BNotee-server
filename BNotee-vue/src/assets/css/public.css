@@ -89,7 +89,8 @@ p.selected, li.selected {
 /* Block Touch Mode */
 .floor.touch-mode,
 .list.touch-mode,
-.table.touch-mode {
+.table.touch-mode,
+.details.touch-mode {
     margin-left: 40px;
 }
 .list .touch-mode {
@@ -159,7 +160,7 @@ h5 {
 /* Paras */
 p {
     margin-top: 0;
-    margin-bottom: .4rem;
+    margin-bottom: 4px;
     border-left: solid 0 #90A4AE;
     border-radius: .2rem 0 0 .2rem;
     -webkit-border-radius: .2rem 0 0 .2rem;
@@ -170,19 +171,20 @@ p {
 /* List Start */
 .list {
     position: relative;
-    width: calc(100% + .4rem);
     min-height: 42px;
-    margin-left: -.4rem;
-    margin-bottom: .6rem;
-    padding: .4rem 0 0 .4rem;
+    margin-left: -4px;
+    margin-bottom: 6px;
+    padding-left: 4px;
     border: solid 2px transparent;
-    border-radius: 8px 0 0 8px;
     -webkit-border-radius: 8px 0 0 8px;
+            border-radius: 8px 0 0 8px;
     box-sizing: border-box;
-    transition: box-shadow .3s, border-color .6s .15s, padding-bottom .3s .3s;
+    transition: box-shadow .3s, border-color .6s .15s,
+                padding .3s .3s;
 }
-.list:not(.touch-mode).hover {
-    padding-bottom: .4rem;
+.list.hover {
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 .list.hover, .list.empty {
     border-color: #CFD8DC;
@@ -211,7 +213,7 @@ li {
 hr {
     height: 3px;
     margin-top: 0;
-    margin-bottom: .4rem;
+    margin-bottom: 4px;
     padding: 0 !important;
     border: none;
     background-color: #333 !important;
@@ -245,7 +247,7 @@ hr.editing {
     position: relative;
     width: fit-content;
     min-width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: .6rem;
     -webkit-border-radius: 8px 0 0 8px;
             border-radius: 8px 0 0 8px;
     transition: height .6s, box-shadow .3s, -webkit-box-shadow .3s;
@@ -294,6 +296,55 @@ td:empty::before {
     color: #cacaca
 }
 /* Table End */
+
+/* Details Start */
+.details {
+    position: relative;
+    margin-bottom: .6rem;
+    padding-left: .4rem;
+    border: solid 2px transparent;
+    box-sizing: border-box;
+    -webkit-border-radius: 8px 0 0 8px;
+            border-radius: 8px 0 0 8px;
+    transition: box-shadow .3s, border-color .6s .15s,
+                padding .3s .3s;
+}
+.details.hover {
+    padding-top: .4rem;
+    padding-bottom: .4rem;
+    border-color: #CFD8DC;
+}
+
+summary {
+    outline: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+.details .summary {
+    width: fit-content;
+    height: 0;
+    margin-left: 1em;
+    border-bottom: solid 1px transparent;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transform: translateY(100%);
+    transition: .3s;
+}
+.details .summary:focus {
+    padding: 0 .2em;
+    color: black;
+    background-color: #F5F5F5;
+    cursor: text !important;
+}
+
+.details p {
+    margin-left: 1em;
+}
+.details p:first-of-type {
+    margin-top: .4rem;
+}
+/* Summary End */
 
 /* Fixed Components */
 .fixed-component {

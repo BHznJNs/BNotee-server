@@ -1,5 +1,5 @@
-const saveNoteList = require("../../script/saveNoteList")
-const NoteDB = require("../../script/db")
+const NoteDB = require("../script/db")
+const checkFile = require("../script/checkData")
 const express = require("express")
 const router = express.Router()
 
@@ -15,31 +15,29 @@ function noteListEdit(location) {
     }
 }
 
-// api：上传笔记数据
+// api：删除笔记数据
 router.post("/api/delete", (req, res) => {
     const password = req.body.password
     const location = req.body.location
-
-    // 判断 文件/文件夹 类型 并 获取 文件/文件夹 名称
-    let fileType, fileName
-    const file = globalThis.NoteList[location[0]]
-    if (location.length == 2 || typeof file == "string") {
-        fileType = "file"
-        if (location.length == 2) {
-            fileName = file[1][location[1]]
-        } else {
-            fileName = file
-        }
-    } else {
-        fileType = "folder"
-        fileName = file[0]
+    const fileInfo = req.body.fileInfo
+    // 数据校验
+    const isDataEqual = checkFile(location, fileInfo)
+    if (!isDataEqual) {
+        // 若数据不同，发送错误信息
+        let status = globalThis.Status[5]
+        // 并发送服务器端数据
+        status.noteList = globalThis.NoteList
+        res.send(status)
+        return
     }
+
+    let fileType = fileInfo.type
+    let fileName = fileInfo.name
 
     NoteDB.delete(fileType, fileName, (err) => {
         // 操作成功
         if (!err) {
             noteListEdit(location)
-            saveNoteList()
 
             let status = globalThis.Status[0]
             status.noteList = globalThis.NoteList

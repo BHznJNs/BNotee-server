@@ -1,3 +1,4 @@
+const saveNoteList = require("./saveNoteList")
 const sqlite3 = require("sqlite3")
 
 const DBFilePath = "data/notes.db"
@@ -37,6 +38,7 @@ class NoteDB {
         })
     }
     static delete(type, name, callback) {
+    console.log(name)
         db.serialize(() => {
             // 若类型为 文件夹，则删除文件下所有文件
             if (type == "folder") {
@@ -58,6 +60,7 @@ process.on("SIGTERM", shutDown)
 process.on("SIGINT", shutDown)
 function shutDown() {
     db.close()
+    saveNoteList()
     console.log("shutdown")
     process.exit(0)
 }
