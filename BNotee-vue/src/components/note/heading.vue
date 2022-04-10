@@ -18,6 +18,7 @@ export default {
         }
         return h(BasicNode, {
             tagName: tagName,
+            id: this.content,
             content: this.content,
             color: this.color,
             selected: this.selected,

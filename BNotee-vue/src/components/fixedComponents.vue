@@ -71,3 +71,11 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    /* Transition */
+    .slide-enter-from,
+    .slide-leave-to {
+        transform: translateY(54px);
+    }
+</style>

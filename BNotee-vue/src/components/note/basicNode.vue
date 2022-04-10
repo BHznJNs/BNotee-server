@@ -8,7 +8,7 @@ export default {
         return {
             initialContent: this.content,
             editing: false,
-            dbClick: false
+            dbTouch: false
         }
     },
     inject: ["selectedNode"],
@@ -52,7 +52,7 @@ export default {
     },
     render() {
         return h(this.tagName, {
-            contentEditable: this.tagName != 'hr',
+            contentEditable: true,
             class: {
                 "selected": this.selected,
                 "editing": this.editing,
@@ -64,15 +64,17 @@ export default {
                 e.preventDefault()
                 this.selectEvent()
             },
-            onClick: (e) => {
+            onTouchstart: () => {
                 // 双击选择
-                if (this.dbClick) {
+                if (this.dbTouch) {
                     this.selectEvent()
                 }
-                this.dbClick = true
+                this.dbTouch = true
                 setTimeout(() => {
-                    this.dbClick = false
+                    this.dbTouch = false
                 }, 300)
+            },
+            onClick: (e) => {
                 // 储存修改前节点内容
                 this.initialContent = e.target.innerText
                 this.editing = true
@@ -86,7 +88,6 @@ export default {
                 }
                 this.editing = false
             }
-            // 去除内容末尾 * 号
         }, this.content)
     }
 }

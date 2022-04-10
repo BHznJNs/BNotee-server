@@ -92,6 +92,6 @@ export default {
      /* Transition */
     .slide-enter-from,
     .slide-leave-to {
-        bottom: -54px;
+        transform: translateY(54px);
     }
 </style>

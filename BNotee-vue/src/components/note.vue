@@ -157,7 +157,6 @@ export default {
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
         overflow: auto;
-        transition: padding-top 0s;
     }
     .fullscreen .note {
         padding-top: 64px;

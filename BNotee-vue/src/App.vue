@@ -20,10 +20,13 @@
     />
 
     <fixed-components/>
+
+    <anchors/>
 </template>
 
 <script>
 import { computed } from "vue"
+import Anchors from "./components/anchors"
 import ToolBar from "./components/toolBar"
 import Uploader from "./components/uploader"
 import ControlBalls from "./components/controlBalls"
@@ -35,6 +38,7 @@ import defaultContent from "./common/defaultContent"
 export default {
     name: 'App',
     components: {
+        Anchors,
         Note, Uploader,
         ControlBalls,
         ToolBar, Msgbar,

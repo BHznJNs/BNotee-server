@@ -106,7 +106,7 @@ export default {
                     singleRow.push("")
                 }
                 for (let i = 0; i < rowDiff; i++) {
-                    this.targetNode.CTS.push(singleRow)
+                    this.targetNode.CTS.push([...singleRow])
                 }
             } else { // 若行数减少
                 for (let i = 0; i < rowDiff; i++) {
@@ -172,6 +172,6 @@ export default {
     /* Transition */
     .slide-enter-from,
     .slide-leave-to {
-        bottom: -54px;
+        transform: translateY(54px);
     }
 </style>

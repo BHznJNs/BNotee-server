@@ -9,7 +9,16 @@
             ></div>
         </template>
         <div class="input-group">
-            <div class="hint">#</div>
+            <div
+                class="hint"
+                @click="$refs.colorInputter.click()"
+            >#</div>
+            <input
+                type="color"
+                ref="colorInputter"
+                v-show="false"
+                v-model="colorValue"
+            >
             <input
                 class="inputter" placeholder="******"
                 type="text" maxlength="8"
@@ -57,10 +66,11 @@ export default {
     watch: {
         colorValue(newValue) {
             clearTimeout(this.timeout)
+            const color = newValue.replace("#", "")
 
             this.timeout = setTimeout(() => {
-                this.setColor("#" + newValue)
-            }, 600)
+                this.setColor("#" + color)
+            }, 300)
         }
     }
 }
@@ -72,7 +82,6 @@ export default {
         align-items: center;
         width: calc(100% - 6rem);
     }
-
     .color {
         margin: auto;
     }
@@ -81,19 +90,21 @@ export default {
     }
 
     .inputter {
-        width: 6em !important;
-    }
-    
-    .closer {
-        width: auto;
-        height: 100%;
-        line-height: 54px;
-        color: var(--default-text-color);
+        width: 5.5em !important;
     }
 
+    @media screen and (min-width: 1024px) {
+        .colors {
+            width: 60vw;
+        }
+        .inputter {
+            width: 6em !important;
+        }
+    }
+    
     /* Transition */
     .slide-enter-from,
     .slide-leave-to {
-        bottom: -54px;
+        transform: translateY(54px);
     }
 </style>

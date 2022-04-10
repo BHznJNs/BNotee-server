@@ -31,7 +31,7 @@
             <div
                 class="tool btn btn-shallow"
                 :class="{ 'disabled': selectedNode.type != 'table' }"
-                @click="tableSetOpen"
+                @click="openTableSet"
             >
                 <i class="material-icons">grid_on</i>
             </div>
@@ -39,7 +39,7 @@
             <div
                 class="tool btn btn-shallow"
                 :class="{ 'disabled': !['basic-node', 'list-item'].includes(selectedNode.type) }"
-                @click="colorsOpen"
+                @click="openColors"
             >
                 <i class="material-icons">color_lens</i>
             </div>
@@ -50,7 +50,7 @@
             >
                 <i class="material-icons">clear_all</i>
             </div>
-            <!-- 清空节点 -->
+            <!-- 上传笔记 -->
             <div
                 class="tool btn btn-shallow"
                 @click="openUploader"
@@ -155,13 +155,13 @@ export default {
             this.selectedNode.type = null
         },
         // 方法：切换表格设置器
-        tableSetOpen() {
+        openTableSet() {
             this.tableSetter = true
             EventBus.emit("note-offset")
             EventBus.emit("tableSetter-open")
         },
         // 方法：打开颜色选择器
-        colorsOpen() {
+        openColors() {
             EventBus.emit("colors-open")
             EventBus.emit("note-offset")
         },
@@ -225,14 +225,6 @@ export default {
 
     .tool {
         margin: .6rem auto;
-    }
-
-    .tool i {
-        display: block;
-        width: 100%;
-        height: 100%;
-        font-size: 28px;
-        line-height: 2rem;
     }
     /* File Uploader */
     i.file input {

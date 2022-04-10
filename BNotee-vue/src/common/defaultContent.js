@@ -89,13 +89,13 @@ export default {
                     CTS: [
                         {
                             NT: "li",
-                            CT: "嵌套列表内一个列表项",
+                            CT: "嵌套列表内的列表项",
                             CL: "#333",
                             SL: false
                         },
                         {
                             NT: "li",
-                            CT: "嵌套列表内一个列表项",
+                            CT: "嵌套列表内的列表项",
                             CL: "#333",
                             SL: false
                         }
