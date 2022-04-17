@@ -25,27 +25,19 @@ export default {
                 // 关闭全局组件
                 EventBus.emit("fixedComponents-close")
                 // 如果节点已被选择，取消选择
-                this.selectedNode.location = null
+                this.selectedNode.loc = null
+                this.selectedNode.obj = null
                 this.selectedNode.type = null
-                this.selectedNode.tagName = null
-
                 this.getThisObj.SL = false
             } else {
                 // 如果已有节点被选择
-                if (this.selectedNode.location) {
+                if (this.selectedNode.loc) {
                     // 选取已被选择节点并取消选择
-                    this.getNodeObj({
-                        location: this.selectedNode.location,
-                        callback: (nodeArray, index) => {
-                            nodeArray[index].SL = false
-                        }
-                    })
+                    this.selectedNode.obj.SL = false
                 }
-
-                this.selectedNode.location = this.location
-                this.selectedNode.type = "basic-node"
-                this.selectedNode.tagName = this.tagName
-
+                this.selectedNode.loc = this.location
+                this.selectedNode.obj = this.getThisObj
+                this.selectedNode.type = this.tagName
                 this.getThisObj.SL = true
             }
         }
@@ -85,6 +77,13 @@ export default {
                 if (resultContent != this.initialContent) {
                     // 修改 this.note 中对应对象数据
                     this.getThisObj.CT = resultContent
+                    EventBus.emit("add-history", {
+                        loc: this.location,
+                        prop: "CT",
+                        before: this.initialContent,
+                        after: resultContent
+                    })
+                    this.initialContent = resultContent
                 }
                 this.editing = false
             }

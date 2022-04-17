@@ -58,12 +58,15 @@ export default {
         isFromNestedList() {
             return this.commandFrom == "list" || 
                    ["li", "nestedList"]
-                   .includes(this.selectedNode.tagName)
+                   .includes(this.selectedNode.type)
         }
     },
     mounted() {
         EventBus.on("textfield-open", (from) => {
             this.commandFrom = from
+            setTimeout(() => {
+                this.$refs.inputter.focus()
+            }, 1200)
         })
     },
     methods: {
@@ -74,7 +77,6 @@ export default {
             const tagName = !this.isFromNestedList ?
                             this.$refs.selector.value :
                             this.$refs.selector4List.value
-            // const tagName = this.$refs.selector.value
             const content = this.$refs.inputter.innerText
             // 定义返回对象
             const returnObj = nodeObjReturner(tagName, content)
@@ -87,11 +89,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-     /* Transition */
-    .slide-enter-from,
-    .slide-leave-to {
-        transform: translateY(54px);
-    }
-</style>

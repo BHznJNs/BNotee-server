@@ -5,7 +5,7 @@
             <!-- 插入节点 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !selectedNode.location || selectedNode.tagName == 'td' }"
+                :class="{ 'disabled': !selectedNode.loc || selectedNode.tagName == 'td' }"
                 @click="openTextfield"
             >
                 <i class="material-icons">add</i>
@@ -13,15 +13,15 @@
             <!-- 删除节点 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !selectedNode.location || selectedNode.tagName == 'td' }"
-                @click="deleteNode"
+                :class="{ 'disabled': !selectedNode.loc || selectedNode.tagName == 'td' }"
+                @click="toDeleteNode"
             >
                 <i class="material-icons">remove</i>
             </div>
             <!-- 取消节点选择 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !selectedNode.location }"
+                :class="{ 'disabled': !selectedNode.loc }"
                 v-show="isTouchMode"
                 @click="nodeCancelSelect"
             >
@@ -79,13 +79,15 @@
 
 <script>
 import getNodeObj from "./mixin/getNodeObj"
+import insertNode from "./mixin/insertNode"
+import deleteNode from "./mixin/deleteNode"
 import EventBus from "../common/EventBus"
 import saveAs from "file-saver"
 
 export default {
     props: ["isTouchMode"],
     inject: ["note", "selectedNode"],
-    mixins: [getNodeObj],
+    mixins: [getNodeObj, insertNode, deleteNode],
     mounted() {
         const fileUploader = this.$refs.fileUploader
         // 当选择文件
@@ -101,69 +103,53 @@ export default {
         })
 
         // 当 textfield 返回插入节点对象
-        EventBus.on("textfield-return-toolBar", (obj) => {
-            this.insertNode(obj)
+        EventBus.on("textfield-return-toolBar", (nodeObj) => {
+            this.toInsertNode(nodeObj)
         })
     },
     methods: {
         // 方法：打开全局输入组
         openTextfield() {
-            EventBus.emit("note-offset")
             EventBus.emit("textfield-open", "toolBar")
         },
-        // 方法：插入节点
-        insertNode(obj) {
-            if (!obj) {
-                return
-            }
-            const location = this.selectedNode.location
-            // 如果未选择节点
-            if (!location) {
-                return
-            }
-            this.getNodeObj({
-                location: location,
-                callback: (nodeArray, index) => {
-                    nodeArray.splice(index + 1, 0, obj)
-                }
+        toInsertNode(nodeObj) {
+            const loc = this.selectedNode.loc
+            this.insertNode(nodeObj, loc)
+
+            loc[loc.length - 1] += 1 // 数组最后一个元素值 + 1
+            EventBus.emit("add-history", {
+                loc,
+                prop: "IST",
             })
         },
-        // 方法：删除被选择节点
-        deleteNode() {
-            const location = this.selectedNode.location
-            this.selectedNode.location = null
-            this.selectedNode.type = null
-            this.selectedNode.tagName = null
-            this.getNodeObj({
-                location: location,
-                callback: (nodeArray, index) => {
-                    // 删除节点
-                    nodeArray.splice(index, 1)
-                }
+        toDeleteNode() {
+            const loc = this.selectedNode.loc
+            const nodeObj = this.deleteNode(loc)
+
+            nodeObj.SL = false
+            loc[loc.length - 1] -= 1 // 数组最后一个元素值 - 1
+            EventBus.emit("add-history", {
+                loc,
+                prop: "DEL",
+                nodeObj
             })
         },
         // 方法：触屏模式下，节点取消选择
         nodeCancelSelect() {
-            this.getNodeObj({
-                location: this.selectedNode.location,
-                callback: (nodeArray, index) => {
-                    nodeArray[index].SL = false
-                }
-            })
-            this.selectedNode.tagName = null
-            this.selectedNode.location = null
+            this.selectedNode.obj.SL = false
+
+            this.selectedNode.loc = null
+            this.selectedNode.obj = null
             this.selectedNode.type = null
         },
         // 方法：切换表格设置器
         openTableSet() {
             this.tableSetter = true
-            EventBus.emit("note-offset")
-            EventBus.emit("tableSetter-open")
+            EventBus.emit("fixedComponents-open", "tableSetter")
         },
         // 方法：打开颜色选择器
         openColors() {
-            EventBus.emit("colors-open")
-            EventBus.emit("note-offset")
+            EventBus.emit("fixedComponents-open", "colors")
         },
         // 方法：清空节点
         clearNodes() {
@@ -179,7 +165,8 @@ export default {
                 [JSON.stringify(this.note.CTS)],
                 {type: "text/plain;charset=utf-8"}
             )
-            saveAs(blob, "myNote.json")
+            const name = this.note.NM || "MyNote"
+            saveAs(blob, name + ".json")
         },
         // 方法：读取本地笔记
         readNote() {

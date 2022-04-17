@@ -55,72 +55,121 @@ export default {
     inject: ["selectedNode"],
     mixins: [getNodeObj],
     mounted() {
-        addEventListener("keydown", (e) => {
-            if (e.key == "Enter") {
-                this.tableSet()
-            }
-        })
+        const nameDict = {
+            "ROW": "row",
+            "COL": "col"
+        }
+
         EventBus.on("table-selected", this.tableGet)
+        EventBus.on("table-edit", ({
+                historyObj, resultValue
+            }) => {
+            this.tableGet(historyObj.loc)
+
+            const targetProp = nameDict[historyObj.prop] // row || col
+            this[targetProp] = historyObj[resultValue]
+            this.tableSet(false)
+        })
     },
     methods: {
-        tableGet() {
+        eventListen(e) {
+            const keyName = e.key
+            if (keyName == "Enter") {
+                this.tableSet(true)
+            }
+        },
+        tableGet(location) {
             // 获取目标表格节点
-            this.getNodeObj({
-                location: this.selectedNode.location,
-                callback: (nodeArray, index) => {
-                    this.targetNode = nodeArray[index]
-                }
-            })
+            if (location) {
+                this.getNodeObj({
+                    location,
+                    callback: (nodeArray, index) => {
+                        this.targetNode = nodeArray[index]
+                    }
+                })
+            } else {
+                this.targetNode = this.selectedNode.obj
+            }
+            
             // 获取目标行数、列数
             this.row = this.targetNode.CTS.length
             this.col = this.targetNode.CTS[0].length
         },
-        tableSet() {
+        tableSet(toAddHistory) {
             //    目标节点行数、列数
             const initialRow = this.targetNode.CTS.length
             const initialCol = this.targetNode.CTS[0].length
             // 计算差值
             const rowDiff = Math.abs(this.row - initialRow)
             const colDiff = Math.abs(this.col - initialCol)
-            // 若列数增加
-            if (this.col > initialCol) {
-                for (let row of this.targetNode.CTS) {
-                    
-                    for (let i = 0; i < colDiff; i++) {
-                        row.push("")
-                    }
+
+            // 若列数改变
+            if (this.col != initialCol) {
+                if (toAddHistory) {
+                    EventBus.emit("add-history", {
+                        loc: this.selectedNode.loc,
+                        prop: "COL",
+                        before: initialCol,
+                        after: this.col
+                    })
                 }
-            } else { // 若列数减少
-                for (let row of this.targetNode.CTS) {
-                    // 计算差值
-                    for (let i = 0; i < colDiff; i++) {
-                        row.pop()
+
+                if (this.col > initialCol) {
+                    // 若列数增加
+                    for (let row of this.targetNode.CTS) {
+                        
+                        for (let i = 0; i < colDiff; i++) {
+                            row.push("")
+                        }
+                    }
+                } else {
+                    // 若列数减少
+                    for (let row of this.targetNode.CTS) {
+                        // 计算差值
+                        for (let i = 0; i < colDiff; i++) {
+                            row.pop()
+                        }
                     }
                 }
             }
-            // 若行数增加
-            if (this.row > initialRow) {
-                // 单独表格行
-                let singleRow = []
-                for (let i = 0; i < this.col; i++) {
-                    singleRow.push("")
+            // 若行数改变
+            if (this.row != initialRow) {
+                if (toAddHistory) {
+                    EventBus.emit("add-history", {
+                        loc: this.selectedNode.loc,
+                        prop: "ROW",
+                        before: initialRow,
+                        after: this.row
+                    })
                 }
-                for (let i = 0; i < rowDiff; i++) {
-                    this.targetNode.CTS.push([...singleRow])
-                }
-            } else { // 若行数减少
-                for (let i = 0; i < rowDiff; i++) {
-                    this.targetNode.CTS.pop()
+                
+                if (this.row > initialRow) {
+                    // 若行数增加
+                    let singleRow = [] // 单独表格行
+                    for (let i = 0; i < this.col; i++) {
+                        singleRow.push("")
+                    }
+                    for (let i = 0; i < rowDiff; i++) {
+                        this.targetNode.CTS.push([...singleRow])
+                    }
+                } else {
+                    // 若行数减少
+                    for (let i = 0; i < rowDiff; i++) {
+                        this.targetNode.CTS.pop()
+                    }
                 }
             }
+            
         }
     },
     watch: {
         disabled(newVal) {
             if (!newVal) {
                 this.tableGet()
+                addEventListener("keydown", this.eventListen)
             } else {
                 this.targetNode = null
+                removeEventListener("keydown", this.eventListen)
             }
         },
         row(newVal) {
@@ -167,11 +216,5 @@ export default {
         height: 100%;
         line-height: 54px;
         color: var(--default-text-color);
-    }
-
-    /* Transition */
-    .slide-enter-from,
-    .slide-leave-to {
-        transform: translateY(54px);
     }
 </style>

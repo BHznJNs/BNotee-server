@@ -24,7 +24,7 @@ router.post("/api/delete", (req, res) => {
     const isDataEqual = checkFile(location, fileInfo)
     if (!isDataEqual) {
         // 若数据不同，发送错误信息
-        let status = globalThis.Status[5]
+        let status = Object.assign({}, globalThis.Status[5])
         // 并发送服务器端数据
         status.noteList = globalThis.NoteList
         res.send(status)
@@ -39,7 +39,7 @@ router.post("/api/delete", (req, res) => {
         if (!err) {
             noteListEdit(location)
 
-            let status = globalThis.Status[0]
+            let status = Object.assign({}, globalThis.Status[0])
             status.noteList = globalThis.NoteList
             res.send(status)
         } else {

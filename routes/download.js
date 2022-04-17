@@ -13,32 +13,16 @@ router.post("/api/download", (req, res) => {
     const isDataEqual = checkFile(location, fileInfo)
     if (!isDataEqual) {
         // 若数据不同，发送错误信息
-        let status = globalThis.Status[5]
+        let status = Object.assign({}, globalThis.Status[5])
         // 并发送服务器端数据
         status.noteList = globalThis.NoteList
         res.send(status)
         return
     }
 
-    // let name
-
-    // if (location.length > 1) { // 若在文件夹中
-    //     const folderLoc = location[0]
-    //     const noteLoc = location[1]
-
-    //     const folder = globalThis.NoteList[folderLoc]
-    //     const folderName = folder[0]
-    //     const noteName = folder[1][noteLoc]
-    //     name = `${folderName}/${noteName}`
-    // } else { // 若不在文件夹中
-    //     const noteLoc = location[0]
-    //     name = globalThis.NoteList[noteLoc]
-    // }
-
-
     NoteDB.read(fileInfo.name, (err, content) => {
         if (!err) {
-            let status = globalThis.Status[0]
+            let status = Object.assign({}, globalThis.Status[0])
             status.noteContent = content.json
             res.send(status)
         } else {

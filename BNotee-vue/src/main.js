@@ -11,7 +11,6 @@ import "./assets/css/materialIcons.css"
 import "./assets/css/shadows.css"
 import "./assets/css/button.css"
 import "./assets/css/checkbox.css"
-import "./assets/css/drawer.css"
 import "./assets/css/anchor.css"
 import './registerServiceWorker'
 

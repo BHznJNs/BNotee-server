@@ -1,23 +1,25 @@
 <script>
 import axios from "axios"
+import getFileData from "./getFileData"
 import EventBus from "../../common/EventBus"
 
 export default {
+    mixins: [getFileData],
     methods: {
         // 方法：上传当前笔记
         // 注：文件夹内文件上传前必须选择对应文件夹
         upload() {
             const noteName = this.note.NM
-            let location, folderName
+            let loc, folderName
 
             // 若选择项目
             if (this.selected) {
-                location = this.selected.loc.split(",")
+                loc = this.selected.loc.split(",")
 
-                const item = this.noteList[location[0]]
+                const item = this.noteList[loc[0]]
                 // 若已选择文件夹，获取文件夹名
                 if (typeof item == "object") {
-                    const folder = this.noteList[location[0]]
+                    const folder = this.noteList[loc[0]]
                     folderName = folder[0]
                 }
             }
@@ -25,7 +27,7 @@ export default {
             // 上传
             axios.post("/api/upload", {
                 note: JSON.stringify(this.note),
-                location, noteName, folderName,
+                location: loc, noteName, folderName,
                 password: this.password
             }).then((res) => {
 
@@ -54,17 +56,17 @@ export default {
                 return
             }
             
-            const location = this.selected.loc.split(",")
-            const fileInfo = this.getData(location)
-            const item = this.noteList[location[0]]
+            const loc = this.selected.loc.split(",")
+            const fileInfo = this.getFileData(loc)
+            const item = this.noteList[loc[0]]
             // 若选择文件夹
-            if (location.length == 1 && typeof item == "object") {
+            if (loc.length == 1 && typeof item == "object") {
                 alert("不能下载文件夹。")
                 return
             }
 
             axios.post("/api/download", {
-                location, fileInfo,
+                location: loc, fileInfo,
                 password: this.password
             }).then((res) => {
                 // 若返回码为 0
@@ -79,7 +81,7 @@ export default {
                         this.note.CTS = resNote.CTS
 
                         // 选中对应文件夹
-                        const folderLoc = location[0]
+                        const folderLoc = loc[0]
                         this.$refs.uploaderList.selFolder(folderLoc)
                     }
                 } else if (res.data.code == 5) {
@@ -125,11 +127,11 @@ export default {
         deleteFile() {
             const toContinue = confirm("此操作无法撤销，你确定吗？")
             if (toContinue) {
-                const location = this.selected.loc.split(",")
-                const fileInfo = this.getData(location)
+                const loc = this.selected.loc.split(",")
+                const fileInfo = this.getFileData(loc)
 
                 axios.post("/api/delete", {
-                    location, fileInfo,
+                    location: loc, fileInfo,
                     password: this.password
                 }).then((res) => {
                     // 若返回码为 0

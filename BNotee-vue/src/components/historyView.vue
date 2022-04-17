@@ -1,0 +1,103 @@
+<template>
+    <div
+        class="history-block"
+        v-for="item in list"
+        :key="item.id"
+    >
+        <div>
+            <span class="history-prop">位置：</span>
+            <span class="loc">{{ item.loc }}</span>
+        </div>
+        <div>
+            <span class="history-prop">属性：</span>
+            <span class="prop">{{ propsDict[item.prop] }}</span>
+        </div>
+        <div v-show="item.before">
+            <span class="history-prop">改前：</span>
+            <span class="text">{{ item.before }}</span>
+        </div>
+        <div v-show="item.after">
+            <span class="history-prop">改后：</span>
+            <span class="text">{{ item.after }}</span>
+        </div>
+        
+        <div
+            class="btn btn-shallow"
+        >
+            <i class="material-icons">check</i>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: ["list"],
+    data() {
+        return {
+            propsDict: {
+                CT: "内容", CL: "颜色", SUM: "题目",
+                ROW: "行数", COL: "列数",
+                IST: "插入", DEL: "删除"
+            }
+        }
+    }
+}
+</script>
+
+<style scoped>
+    .history-block {
+        position: relative;
+        margin: 0 12px 16px;
+        padding: 8px;
+        background-color: #fff;
+        border-radius: 2px;
+        line-height: 1.5;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+        overflow: hidden;
+        -webkit-box-shadow: var(--shadow-2);
+                box-shadow: var(--shadow-2);
+    }
+
+    /* History Block Content */
+    .history-prop {
+        user-select: none;
+        padding-left: 2px;
+        border-left: solid #90A4AE 0;
+        transition: border-width .2s;
+    }
+    div:hover > .history-prop {
+        border-width: 4px;
+    }
+    .loc, .prop {
+        user-select: none;
+    }
+    .loc, .prop, .text {
+        font-family: sans-serif;
+        padding: 1px 6px;
+        border-radius: 6px;
+    }
+    .loc {
+        background-color: #E8F5E9;
+    }
+    .prop {
+        background-color: #E1F5FE;
+    }
+    .text {
+        background-color: #EEE;
+    }
+    /* History Block Content End */
+
+    .btn {
+        width: 148px;
+        height: 0;
+        margin: 0 auto 0;
+        transition: all .2s,
+                    height .2s .2s,
+                    margin .2s;
+    }
+    .history-block:hover .btn {
+        height: 36px;
+        margin-top: 8px;
+    }
+</style>

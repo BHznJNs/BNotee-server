@@ -1,10 +1,7 @@
 <template>
     <div
         class="note-outer shadow-4"
-        :class="{
-            'offset': offset,
-            'fullscreen': isFullscreen
-        }"
+        :class="{ 'fullscreen': isFullscreen }"
     >
         <div class="note" ref="note" @contextmenu.prevent="">
             <template
@@ -48,7 +45,6 @@
 import FloorBlock from "./note/floorBlock"
 import NodeRenderer from "./note/nodeRenderer"
 import TextfieldGroup from "./textfieldGroup"
-import EventBus from "../common/EventBus"
 
 export default {
     components: {
@@ -58,7 +54,6 @@ export default {
     data() {
         return {
             isNodeAdding: false,
-            offset: false
         }
     },
     props: ["isFullscreen"],
@@ -75,10 +70,6 @@ export default {
             }
         })
     },
-    mounted() {
-        EventBus.on("note-offset", () => {this.offset = true})
-        EventBus.on("note-offset-cancel", () => {this.offset = false})
-    },
     methods: {
         // 方法：打开插入文本框
         openNodeAdder() {
@@ -88,7 +79,6 @@ export default {
         // 方法：关闭插入文本框
         closeNodeAdder(obj) {
             this.isNodeAdding = false
-            // console.log(obj)
             if (obj) {
                 this.note.CTS.push(obj)
             }
@@ -114,7 +104,7 @@ export default {
         right: 0;
         display: inline-block;
         width: calc(100vw - 108px);
-        height: 84vh;
+        height: calc(100vh - 128px);
         margin-top: 56px;
         border-radius: 15px 0 0 15px;
         -webkit-border-radius: 15px 0 0 15px;
@@ -126,9 +116,7 @@ export default {
         overflow: hidden;
         contain: content;
     }
-    .note-outer.offset {
-        height: 76vh;
-    }
+
     .note-outer.fullscreen {
         width: 100vw;
         height: 100vh;
@@ -143,9 +131,6 @@ export default {
         @media screen and (max-height: 450px) {
             .note-outer {
                 height: 72vh;
-            }
-            .note-outer.offset {
-                height: 64vh;
             }
         }
     }

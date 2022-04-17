@@ -4,7 +4,7 @@
             <div class="mask"></div>
             <i class="material-icons">apps</i>
         </div>
-        <!-- 黑暗模式切换 -->
+        <!-- 打开笔记概要 -->
         <div
             class="ball btn" 
             @click="openAnchors"

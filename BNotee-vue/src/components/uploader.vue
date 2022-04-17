@@ -78,15 +78,15 @@
         </div>
     </div>
 </template>
+
 <script>
 import UploaderList from "./uploaderList"
 import TextfieldGroup from "./textfieldGroup"
 import CURD from "./mixin/CURD"
-import getData from "./mixin/getData"
 
 export default {
     components: { UploaderList, TextfieldGroup },
-    mixins: [getData, CURD],
+    mixins: [CURD],
     inject: ["note"],
     data() {
         return {
@@ -110,11 +110,13 @@ export default {
     
 }
 </script>
+
 <style scoped>
     .fullscreen-mask {
         display: grid;
         place-items: center;
         z-index: 1000;
+        cursor: default;
     }
     /* 横屏 */
     @media screen and (orientation: landscape) {
@@ -142,7 +144,8 @@ export default {
             align-items: center;
         }
         .btn {
-            min-width: 85%
+            width: 148px;
+            max-width: 85%;
         }
     }
     

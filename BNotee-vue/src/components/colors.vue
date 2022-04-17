@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import EventBus from '../common/EventBus'
 import getNodeObj from "./mixin/getNodeObj"
 
 export default {
@@ -55,11 +56,16 @@ export default {
     mixins: [getNodeObj],
     methods: {
         setColor(color) {
-            this.getNodeObj({
-                location: this.selectedNode.location,
-                callback: (nodeArray, index) => {
-                    nodeArray[index].CL = color
-                }
+            const loc = this.selectedNode.loc
+            const nodeObj = this.selectedNode.obj
+            const initialColor = nodeObj.CL
+            nodeObj.CL = color
+
+            EventBus.emit("add-history", {
+                loc,
+                prop: "CL",
+                before: initialColor,
+                after: color
             })
         }
     },
@@ -80,7 +86,8 @@ export default {
     .colors {
         display: flex;
         align-items: center;
-        width: calc(100% - 6rem);
+        width: calc(100vw - 108px);
+        max-width: 480px;
     }
     .color {
         margin: auto;
@@ -100,11 +107,5 @@ export default {
         .inputter {
             width: 6em !important;
         }
-    }
-    
-    /* Transition */
-    .slide-enter-from,
-    .slide-leave-to {
-        transform: translateY(54px);
     }
 </style>

@@ -48,9 +48,9 @@ export default {
         return {
             note: defaultContent,
             selectedNode: {
-                location: null,
-                type: null,
-                tagName: null
+                loc: null,
+                obj: null,
+                type: null
             },
             isDarkMode: false,
             isTouchMode: false,
@@ -78,7 +78,7 @@ export default {
         left: 0;
         right: 0;
         bottom: 0; 
-        z-index: 9999;
+        z-index: 10000;
         mix-blend-mode: difference;
         background-color: #e0e0e000;
         pointer-events: none;

@@ -12,6 +12,7 @@
             @close="close"
             :disabled="tableSetterDisabled"
         />
+        <history :disabled="historyDisabled"/>
    </div>
 </template>
 
@@ -19,6 +20,7 @@
 import TextfieldGroupFixed from "./textfieldGroupFixed"
 import Colors from "./colors"
 import TableSetter from "./tableSetter"
+import History from "./history"
 import EventBus from "../common/EventBus"
 
 export default {
@@ -26,47 +28,38 @@ export default {
         return {
             textfieldGroupDisabled: true,
             colorsDisabled: true,
-            tableSetterDisabled: true
+            tableSetterDisabled: true,
+            historyDisabled: false
         }
     },
     components: {
         TextfieldGroupFixed,
-        Colors, TableSetter
+        Colors, TableSetter, History
     },
     methods: {
+        open(component) {
+            this.closeAll()
+            this[component + "Disabled"] = false
+        },
         close(component) {
             this[component + "Disabled"] = true
-            EventBus.emit("note-offset-cancel")
+            this.historyDisabled = false
+        },
+        closeAll() {
+            this.colorsDisabled = true
+            this.textfieldGroupDisabled = true
+            this.tableSetterDisabled = true
+            this.historyDisabled = true
         }
     },
     mounted() {
+        EventBus.on("fixedComponents-open", this.open)
         // textfield
-        EventBus.on("textfield-open", () => {
-            this.colorsDisabled = true
-            this.tableSetterDisabled = true
-            this.textfieldGroupDisabled = false
-        })
-
-        // Colors
-        EventBus.on("colors-open", () => {
-            this.tableSetterDisabled = true
-            this.textfieldGroupDisabled = true
-            this.colorsDisabled = false
-        })
-
-        // Table Setter
-        EventBus.on("tableSetter-open", () => {
-            this.colorsDisabled = true
-            this.textfieldGroupDisabled = true
-            this.tableSetterDisabled = false
-        })
-
+        EventBus.on("textfield-open", () => {this.open("textfieldGroup")})
 
         EventBus.on("fixedComponents-close", () => {
-            this.colorsDisabled = true
-            this.textfieldGroupDisabled = true
-            this.tableSetterDisabled = true
-            EventBus.emit("note-offset-cancel")
+            this.closeAll()
+            this.historyDisabled = false
         })
     }
 }

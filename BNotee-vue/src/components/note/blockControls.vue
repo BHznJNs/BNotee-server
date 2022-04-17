@@ -62,21 +62,17 @@ export default {
             // 若被选择
             if (checked) {
                 // 如果已有节点被选择
-                if (this.selectedNode.location) {
+                if (this.selectedNode.loc) {
                     // 选取已被选择节点并取消选择
-                    this.getNodeObj({
-                        location: this.selectedNode.location,
-                        callback: (nodeArray, index) => {
-                            nodeArray[index].SL = false
-                        }
-                    })
+                    this.selectedNode.obj.SL = false
                 }
 
-                this.selectedNode.location = this.location
+                this.selectedNode.loc = this.location
+                this.selectedNode.obj = this.getThisObj
                 this.selectedNode.type = this.parentType
                 // 若父组件为列表
                 if (this.parentType == "list") {
-                    this.selectedNode.tagName =
+                    this.selectedNode.type =
                         (this.$parent.isNested) ?
                             "nestedList" :
                             "notNestedList"
@@ -86,29 +82,45 @@ export default {
                     EventBus.emit("table-selected")
                 }
             } else { // 若取消选择
-                this.selectedNode.location = null
+                this.selectedNode.loc = null
+                this.selectedNode.obj = null
                 this.selectedNode.type = null
-                this.selectedNode.tagName = null
             }
         },
         // 方法：打开全局输入组
         addNode() {
+            const CTS = this.getThisObj.CTS
+
             if (this.parentType == "table") {
-                // 获取当前表格列数
-                const colNum = this.getThisObj.CTS[0].length
+                // 获取当前表格行数，列数
+                const rowNum = CTS.length
+                const colNum = CTS[0].length
                 // 新行
                 let newRow = []
                 for (let i = 0; i < colNum; i++) {
                     newRow.push("")
                 }
                 // 插入新行
-                this.getThisObj.CTS.push(newRow)
+                CTS.push(newRow)
+                EventBus.emit("add-history", {
+                    loc: this.location,
+                    prop: "ROW",
+                    before: rowNum,
+                    after: rowNum + 1
+                })
             } else if (this.parentType == "details") {
-                // 若为 详情 组件， 添加 子段落元素
-                this.getThisObj.CTS.push({
+                // 若为 详情 组件，直接添加 子段落元素
+                CTS.push({
                     CT: "",
                     CL: "#333",
                     SL: false
+                })
+                // 添加历史对象
+                const loc = this.location
+                loc.push(CTS.length - 1)
+                EventBus.emit("add-history", {
+                    loc,
+                    prop: "IST"
                 })
             } else { // List Block || Floor Block
                 // 添加事件监听
@@ -116,13 +128,19 @@ export default {
                 EventBus.on("textfield-return-" + this.parentType, (obj) => {
                     // 向父元素添加节点
                     if (obj) {
-                        this.getThisObj.CTS.push(obj)
+                        CTS.push(obj)
                     }
+                    // 添加历史对象
+                    const loc = this.location
+                    loc.push(CTS.length - 1)
+                    EventBus.emit("add-history", {
+                        loc,
+                        prop: "IST"
+                    })
                     // 移除事件监听
                     EventBus.off("textfield-return-" + this.parentType)
                 })
 
-                EventBus.emit("note-offset")
                 EventBus.emit("textfield-open", this.parentType)
             }
         }

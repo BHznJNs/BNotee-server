@@ -28,11 +28,12 @@
 </template>
 
 <script>
+import EventBus from "../common/EventBus"
 import nodeObjReturner from "../common/nodeObjReturner"
 
 export default {
     props: ["isAdding"],
-    emits: ["return-node"],
+    inject: ["note"],
     methods: {
         focus() {
             const textfield = this.$refs.inputter
@@ -49,9 +50,16 @@ export default {
             const returnObj = nodeObjReturner(tagName, content)
 
             this.$emit("return-node", returnObj)
-
+            
             textfield.blur()
             textfield.innerText = ""
+
+            // 添加历史对象
+            const loc = [this.note.CTS.length - 1]
+            EventBus.emit("add-history", {
+                loc,
+                prop: "IST"
+            })
         }
     }
 }

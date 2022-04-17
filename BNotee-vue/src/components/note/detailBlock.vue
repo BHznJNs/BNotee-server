@@ -48,6 +48,7 @@ import BasicNode from "./basicNode"
 import BlockControls from "./blockControls"
 import blockHoverEvent from "../mixin/blockHoverEvent"
 import getNodeObj from "../mixin/getNodeObj"
+import EventBus from "../../common/EventBus"
 
 export default {
     components: {BasicNode, BlockControls},
@@ -60,8 +61,14 @@ export default {
     methods: {
         finishEdit(e) {
             const obj = e.target
-            const text = obj.innerText
-            this.getThisObj.SUM = text
+            const newSum = obj.innerText
+            EventBus.emit("add-history", {
+                loc: this.location,
+                prop: "SUM",
+                before: this.getThisObj.SUM,
+                after: newSum
+            })
+            this.getThisObj.SUM = newSum
         }
     }
 }

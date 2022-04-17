@@ -105,9 +105,9 @@ export default {
             }
         },
         // 方法：选取指定文件夹
-        selFolder(loc) {
+        selFolder(location) {
             const noteList = this.$refs.noteList
-            const folderNode = noteList.children[loc]
+            const folderNode = noteList.children[location]
             const folderIconNode = folderNode.querySelector("i")
             folderIconNode.click()
         }

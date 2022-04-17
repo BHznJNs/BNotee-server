@@ -19,7 +19,8 @@
 
 /* Fixed */
 .textfield-group.fixed {
-    width: calc(100% - 6rem);
+    width: calc(100vw - 108px);
+    max-width: 480px;
 }
 .textfield-group.fixed * {
     margin-bottom: 0 !important;

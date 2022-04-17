@@ -1,7 +1,9 @@
 a {
     position: relative;
+    display: block;
     max-width: 100%;
     padding: 2px 6px;
+    margin-bottom: 4px;
     font-size: 1.2rem;
     overflow: hidden;
     text-decoration: none;
@@ -36,12 +38,15 @@ a:hover {
     background-color: #EBEBEB;
 }
 
+a[level="1"] {
+    margin-left: 16px;
+}
 a[level="2"] {
-    margin-left: .8em;
+    margin-left: 28px;
 }
 a[level="3"] {
-    margin-left: 1.6em;
+    margin-left: 40px;
 }
 a[level="4"] {
-    margin-left: 2.4em;
+    margin-left: 52px;
 }

@@ -1,16 +1,17 @@
 /*
     NM --> Name
+    HT --> History
     NT --> Node Type
     CT --> Content
     CTS --> Contents
     CL --> Color
-    LV --> Level
     SL --> Selected
     OL --> isOrdered
     SUM --> Summary
 */
 export default {
     NM: "Example",
+    HT: [],
     CTS: [
     
         {

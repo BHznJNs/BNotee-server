@@ -1,12 +1,20 @@
 # BNotee-server
+
 English description: [README_EN.md](https://github.com/BHznJNs/BNotee-server/blob/master/README_EN.md)
 
-[Git_Page](https://bhznjns.github.io/BNotee/dist/)
+[GitPage](https://bhznjns.github.io/BNotee/dist/)
 
 [BNotee](https://github.com/BHznJNs/BNotee)的 Server 版本。
 
 ## 特点
+
 这是一个特殊的笔记程序，它的特殊在于你必须自行部署它的服务器端（在你的电脑上），然后你就可以在任何一个带有浏览器的设备上编辑你的笔记（IE 除外 ;>）。
+
+并且，由于技术限制，它目前还不支持编辑行内元素的样式，因此我又将它叫做 “穷文本” 编辑器。
+
+## 项目依赖
+
+sqlite3 && nodejs >= 14.x
 
 ## 安装
 

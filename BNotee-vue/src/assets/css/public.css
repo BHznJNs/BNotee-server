@@ -31,6 +31,7 @@ body *::-webkit-scrollbar-thumb {
 
 /* Closer */
 .closer {
+    height: 100%;
     cursor: pointer;
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -73,9 +74,6 @@ body *::-webkit-scrollbar-thumb {
 .details.touch-mode {
     margin-left: 40px;
 }
-.list .touch-mode {
-    left: -46px;
-}
 /* Block Touch Mode End */
 
 /* Block Mask */
@@ -106,6 +104,11 @@ body *::-webkit-scrollbar-thumb {
             box-shadow: var(--shadow-3);
     transition: transform .6s;
 }
+    /* Transition */
+    .fixed-component.slide-enter-from,
+    .fixed-component.slide-leave-to {
+        transform: translateY(54px);
+    }
 /* Fixed Components End */
 
 /* Fullscreen Mask */

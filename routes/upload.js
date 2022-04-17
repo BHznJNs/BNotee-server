@@ -37,7 +37,7 @@ router.post("/api/upload", (req, res) => {
     NoteDB.write(isNew, name, noteContent, (err) => {
         // 操作成功
         if (!err) {
-            let status = globalThis.Status[0]
+            let status = Object.assign({}, globalThis.Status[0])
             status.isNew = isNew
             status.noteList = globalThis.NoteList
             res.send(status)

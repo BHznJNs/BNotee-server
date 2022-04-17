@@ -3,16 +3,16 @@ export default {
     methods: {
         // 方法：判断 文件/文件夹 类型 并 获取 文件/文件夹 名称
         //      返回 类型 及 名称
-        getData(loc) {
-            const item = this.noteList[loc[0]]
+        getFileData(location) {
+            const item = this.noteList[location[0]]
 
             let type, name
             // 文件夹内文件
-            if (loc.length == 2) {
+            if (location.length == 2) {
                 type = "file"
                 const folder = item[1]
                 const folderName = item[0]
-                const fileName = folder[loc[1]]
+                const fileName = folder[location[1]]
                 name = `${folderName}/${fileName}`
             } else { // 不在文件夹内
                 if (typeof item == "string") {
