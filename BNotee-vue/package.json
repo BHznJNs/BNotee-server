@@ -1,7 +1,7 @@
 {
   "name": "BNotee",
   "version": "1.0.0",
-  "private": true,
+  "homepage": "https://github.com/BHznJNs/BNotee",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
