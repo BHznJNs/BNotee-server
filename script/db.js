@@ -19,13 +19,13 @@ class NoteDB {
             if (isNew) {  // 若为新笔记
                 db.run(`
                     insert into notes (name, json)
-                    values ('${noteName}', '${noteContent}');
-                `, callback())
+                    values ( ? , ? );
+                `, noteName, noteContent, callback())
             } else { // 若笔记列表中已存在
                 db.run(`
-                    update notes set json = '${noteContent}'
-                    where name = '${noteName}';
-                `, callback)
+                    update notes set json = ?
+                    where name = ? ;
+                `, noteContent, noteName, callback)
             }
         })
     }
@@ -33,8 +33,8 @@ class NoteDB {
         db.serialize(() => {
             db.get(`
                 select json from notes
-                where name == '${noteName}';
-            `, callback)
+                where name == ? ;
+            `, noteName, callback)
         })
     }
     static delete(type, name, callback) {
@@ -44,13 +44,13 @@ class NoteDB {
             if (type == "folder") {
                 db.run(`
                     delete from notes
-                    where name like '${name}/%';
-                `, callback)
+                    where name like '?/%';
+                `, name, callback)
             } else {
                 db.run(`
                     delete from notes
-                    where name = '${name}';
-                `, callback)
+                    where name = ? ;
+                `,name , callback)
             }
         })
     }

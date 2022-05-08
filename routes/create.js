@@ -1,3 +1,5 @@
+const checkPassword = require("../script/checkPassword")
+
 const express = require("express")
 const router = express.Router()
 
@@ -35,7 +37,7 @@ router.post("/api/create", (req, res) => {
             []
         ])
 
-        let status = Object.assign({}, globalThis.Status[0])
+        let status = Object.create({}, globalThis.Status[0])
         status.noteList = globalThis.NoteList
         res.send(status)
     }

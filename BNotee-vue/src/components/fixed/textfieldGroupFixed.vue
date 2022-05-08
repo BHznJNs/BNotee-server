@@ -42,8 +42,8 @@
 </template>
 
 <script>
-import EventBus from "../common/EventBus"
-import nodeObjReturner from "../common/nodeObjReturner"
+import EventBus from "../../common/EventBus"
+import nodeObjReturner from "../../common/nodeObjReturner"
 
 export default {
     data() {

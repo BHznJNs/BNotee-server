@@ -1,10 +1,19 @@
 const NoteDB = require("../script/db")
+const checkPassword = require("../script/checkPassword")
+
 const express = require("express")
 const router = express.Router()
 
 // api：上传笔记数据
 router.post("/api/upload", (req, res) => {
     const password = req.body.password
+    const isPasswordRight = checkPassword(password)
+    // 若密码错误
+    if (!isPasswordRight) {
+        res.send(globalThis.Status[1])
+        return
+    }
+
     const noteContent = req.body.note
     const location = req.body.location
 
@@ -37,7 +46,7 @@ router.post("/api/upload", (req, res) => {
     NoteDB.write(isNew, name, noteContent, (err) => {
         // 操作成功
         if (!err) {
-            let status = Object.assign({}, globalThis.Status[0])
+            let status = Object.create({}, globalThis.Status[0])
             status.isNew = isNew
             status.noteList = globalThis.NoteList
             res.send(status)

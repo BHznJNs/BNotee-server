@@ -110,9 +110,6 @@ p {
 .list.hover, .list.empty {
     border-color: #CFD8DC;
 }
-.list.nested {
-    font-size: .85rem;
-}
 ol, ul {
     padding-left: 1.2rem;
     margin: 0;

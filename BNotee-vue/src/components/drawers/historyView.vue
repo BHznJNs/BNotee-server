@@ -1,7 +1,7 @@
 <template>
     <div
         class="history-block"
-        v-for="item in list"
+        v-for="(item, index) in list"
         :key="item.id"
     >
         <div>
@@ -23,8 +23,9 @@
         
         <div
             class="btn btn-shallow"
+            @click="doSome($event)"
         >
-            <i class="material-icons">check</i>
+            <i class="material-icons" :data-index="index">check</i>
         </div>
     </div>
 </template>
@@ -39,6 +40,14 @@ export default {
                 ROW: "行数", COL: "列数",
                 IST: "插入", DEL: "删除"
             }
+        }
+    },
+    methods: {
+        doSome(e) {
+            const obj = e.target
+            const index = obj.dataset["index"]
+            const historyParent = this.$parent.$parent
+            historyParent.doSome(index)
         }
     }
 }

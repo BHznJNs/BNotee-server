@@ -26,17 +26,20 @@
 
 <script>
 import { computed } from "vue"
-import Anchors from "./components/anchors"
+
 import ToolBar from "./components/toolBar"
-import Uploader from "./components/uploader"
-import ControlBalls from "./components/controlBalls"
 import Note from "./components/note"
-import FixedComponents from "./components/fixedComponents"
-import Msgbar from "./components/msgbar"
+import Anchors from "./components/drawers/anchors"
+
+import Uploader from "./components/uploader/uploader"
+import ControlBalls from "./components/fixed/controlBalls"
+import FixedComponents from "./components/fixed/fixedComponents"
+import Msgbar from "./components/fixed/msgbar"
+
 import defaultContent from "./common/defaultContent"
 
 export default {
-    name: 'App',
+    name: "App",
     components: {
         Anchors,
         Note, Uploader,
@@ -63,6 +66,26 @@ export default {
             selectedNode: this.selectedNode,
             isTouchMode: computed(() => {return this.isTouchMode})
         }
+    },
+    mounted() {
+        (() => {
+            // 移动端 防止 软键盘弹起导致 vh 改变
+            const initViewportHeight = () => {
+                const meta = document.querySelector("#meta-viewport")
+                let height = 1080
+                if (window) {
+                    height = window.innerHeight
+                }
+                const content = `width=device-width,height=${height},initial-scale=1.0`
+                meta.setAttribute("content", content)
+            }
+            initViewportHeight()
+
+            // 屏幕旋转检测
+            addEventListener("orientationchange", () => {
+                initViewportHeight()
+            })
+        })()
     }
 }
 </script>

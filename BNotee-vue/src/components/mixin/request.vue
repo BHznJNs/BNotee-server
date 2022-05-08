@@ -79,6 +79,8 @@ export default {
                         const resNote = JSON.parse(resJsonStr)
                         this.note.NM = resNote.NM
                         this.note.CTS = resNote.CTS
+                        // Set Title
+                        document.title = `${resNote.NM} -- BNotee`
 
                         // 选中对应文件夹
                         const folderLoc = loc[0]

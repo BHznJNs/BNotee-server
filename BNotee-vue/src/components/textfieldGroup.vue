@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import EventBus from "../common/EventBus"
 import nodeObjReturner from "../common/nodeObjReturner"
 
 export default {
@@ -53,13 +52,6 @@ export default {
             
             textfield.blur()
             textfield.innerText = ""
-
-            // 添加历史对象
-            const loc = [this.note.CTS.length - 1]
-            EventBus.emit("add-history", {
-                loc,
-                prop: "IST"
-            })
         }
     }
 }

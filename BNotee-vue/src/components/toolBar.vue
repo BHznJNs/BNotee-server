@@ -27,14 +27,6 @@
             >
                 <i class="material-icons">indeterminate_check_box</i>
             </div>
-            <!-- 表格设置 -->
-            <div
-                class="tool btn btn-shallow"
-                :class="{ 'disabled': selectedNode.type != 'table' }"
-                @click="openTableSet"
-            >
-                <i class="material-icons">grid_on</i>
-            </div>
             <!-- 节点颜色修改 -->
             <div
                 class="tool btn btn-shallow"
@@ -142,11 +134,6 @@ export default {
             this.selectedNode.obj = null
             this.selectedNode.type = null
         },
-        // 方法：切换表格设置器
-        openTableSet() {
-            this.tableSetter = true
-            EventBus.emit("fixedComponents-open", "tableSetter")
-        },
         // 方法：打开颜色选择器
         openColors() {
             EventBus.emit("fixedComponents-open", "colors")
@@ -154,6 +141,8 @@ export default {
         // 方法：清空节点
         clearNodes() {
             this.note.CTS = []
+            this.note.HT = []
+            EventBus.emit("clear-history")
         },
         // 方法：打开笔记上传
         openUploader() {

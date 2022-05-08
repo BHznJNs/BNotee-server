@@ -37,7 +37,7 @@
     </div>
 </template>
 <script>
-import EventBus from "../common/EventBus"
+import EventBus from "../../common/EventBus"
 
 export default {
     props: [

@@ -38,10 +38,10 @@
 </template>
 
 <script>
-import EventBus from "../common/EventBus"
-import getNodeObj from "./mixin/getNodeObj"
-import insertNode from "./mixin/insertNode"
-import deleteNode from "./mixin/deleteNode"
+import EventBus from "../../common/EventBus"
+import getNodeObj from "../mixin/getNodeObj"
+import insertNode from "../mixin/insertNode"
+import deleteNode from "../mixin/deleteNode"
 import Drawer from "./drawer"
 import HistoryView from "./historyView"
 
@@ -110,9 +110,29 @@ export default {
                     break
                 }
             }
+        },
+        // 根据索引批量操作
+        doSome(index) {
+            const diff = index - this.historyIndex
+            const diffAbs = Math.abs(diff)
+
+            let type
+            if (diff > 0) {
+                // 若需撤销
+                type = "undo"
+            } else if (diff < 0) {
+                type = "redo"
+            } else {
+                return
+            }
+
+            for (let i = 0; i < diffAbs; i++) {
+                this.doit(type)
+            }
         }
     },
     mounted() {
+        // alt + z --> undo
         addEventListener("keydown", (e) => {
             const altKey = e.altKey
             const keyName = e.key
@@ -120,6 +140,7 @@ export default {
                 this.doit("undo")
             }
         })
+        // alt + y --> redo
         addEventListener("keydown", (e) => {
             const altKey = e.altKey
             const keyName = e.key
@@ -147,6 +168,9 @@ export default {
                 historyArray.unshift(obj)
                 this.historyIndex = -1
             }
+        })
+        EventBus.on("clear-history", () => {
+            this.historyIndex = -1
         })
     }
 }

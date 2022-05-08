@@ -34,12 +34,12 @@
             <div class="input-group">
                 <input
                     class="inputter" type="text"
-                    placeholder="笔记名"
+                    placeholder="笔记名" maxlength="20"
                     v-model="note.NM"
                 >
                 <input
                     class="inputter" type="password"
-                    placeholder="密码"
+                    placeholder="密码" maxlength="10"
                     v-model="password"
                 >
             </div>
@@ -81,12 +81,12 @@
 
 <script>
 import UploaderList from "./uploaderList"
-import TextfieldGroup from "./textfieldGroup"
-import CURD from "./mixin/CURD"
+import TextfieldGroup from "../textfieldGroup"
+import request from "../mixin/request"
 
 export default {
     components: { UploaderList, TextfieldGroup },
-    mixins: [CURD],
+    mixins: [request],
     inject: ["note"],
     data() {
         return {

@@ -29,10 +29,20 @@
             :selected="selected"
             :location="location"
             :parentType="'table'"
-        />
+        >
+            <!-- 表格设置 -->
+            <div
+                class="btn btn-normal tool-btn"
+                :class="{ 'disabled': !selected }"
+                @click="openTableSetter"
+            >
+                <i class="material-icons">grid_on</i>
+            </div>
+        </block-controls>
     </div>
 </template>
 <script>
+import EventBus from "../../common/EventBus"
 import TableRow from "./tableRow"
 import BlockControls from "./blockControls"
 import blockHoverEvent from "../mixin/blockHoverEvent"
@@ -46,6 +56,24 @@ export default {
     mixins: [blockHoverEvent],
     components: {
         TableRow, BlockControls
+    },
+    methods: {
+        openTableSetter() {
+            EventBus.emit("fixedComponents-open", "tableSetter")
+        }
     }
 }
 </script>
+
+<style scoped>
+    /* tool Button */
+    .tool-btn {
+        width: 10%;
+        min-width: 60px;
+        max-width: 84px;
+        height: 32px;
+        line-height: 32px;
+        margin: 0 40px 0 -20px;
+        background-color: #CFD8DC;
+    }
+</style>

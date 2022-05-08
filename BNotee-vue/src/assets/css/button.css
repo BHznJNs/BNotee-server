@@ -57,3 +57,45 @@
     font-size: 28px;
     line-height: 36px;
 }
+
+.btn-fab {
+    position: fixed;
+    /* 手机平板上距离屏幕右下角 16px */
+    right: 16px;
+    bottom: 16px;
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    border-radius: 50%;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    -webkit-box-shadow: var(--shadow-6);
+            box-shadow: var(--shadow-6);
+    -webkit-transition: all 0.2s, -webkit-box-shadow 0.2s;
+            transition: all 0.2s, -webkit-box-shadow 0.2s;
+            transition: all 0.2s, box-shadow 0.2s;
+            transition: all 0.2s, box-shadow 0.2s, -webkit-box-shadow 0.2s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+.btn-fab:hover {
+    opacity: 0.87;
+    -webkit-box-shadow: var(--shadow-8);
+            box-shadow: var(--shadow-8);
+}
+.btn-fab:active {
+    opacity: 0.76;
+    -webkit-box-shadow: var(--shadow-8);
+            box-shadow: var(--shadow-8);
+}
+@media (min-width: 1024px) {
+    .btn-fab {
+        /* 电脑上距离屏幕右下角 24px */
+        right: 24px;
+        bottom: 24px;
+    }
+}

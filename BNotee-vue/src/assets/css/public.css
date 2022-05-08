@@ -22,11 +22,6 @@ body *::-webkit-scrollbar {
 body *::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
 }
-.note {
-    /* Firefox */
-    scrollbar-width: thin !important;
-    scrollbar-color: #666;
-}
 /* Scrollbar End */
 
 /* Closer */
@@ -50,7 +45,7 @@ body *::-webkit-scrollbar-thumb {
 }
 .closer i:hover {
     color: black;
-    background-color: #EBEBEB;
+    background-color: white;
 }
 
 .closer.circle i {
@@ -92,7 +87,7 @@ body *::-webkit-scrollbar-thumb {
 
 /* Fixed Components */
 .fixed-component {
-    position: absolute;
+    position: absolute !important;
     bottom: 0;
     right: 0;
     height: 54px;
@@ -102,7 +97,7 @@ body *::-webkit-scrollbar-thumb {
     background-color: white;
     -webkit-box-shadow: var(--shadow-3);
             box-shadow: var(--shadow-3);
-    transition: transform .6s;
+    transition: transform .6s !important;
 }
     /* Transition */
     .fixed-component.slide-enter-from,

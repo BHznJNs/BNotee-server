@@ -39,8 +39,8 @@
     </transition>
 </template>
 <script>
-import EventBus from '../common/EventBus'
-import getNodeObj from "./mixin/getNodeObj"
+import EventBus from "../../common/EventBus"
+import getNodeObj from "../mixin/getNodeObj"
 
 export default {
     data() {

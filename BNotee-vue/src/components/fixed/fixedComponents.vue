@@ -20,8 +20,8 @@
 import TextfieldGroupFixed from "./textfieldGroupFixed"
 import Colors from "./colors"
 import TableSetter from "./tableSetter"
-import History from "./history"
-import EventBus from "../common/EventBus"
+import History from "../drawers/history"
+import EventBus from "../../common/EventBus"
 
 export default {
     data() {

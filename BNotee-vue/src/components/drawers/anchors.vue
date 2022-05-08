@@ -13,7 +13,7 @@
 <script>
 import { h } from "vue"
 import Drawer from "./drawer"
-import EventBus from "../common/EventBus"
+import EventBus from "../../common/EventBus"
 
 export default {
     data() {
@@ -44,35 +44,19 @@ export default {
     inject: ["note"],
     methods: {
         // 方法：返回笔记内所有锚点元素
-        getAnchors(nodeList, level, index, callback) {
-            let list = []
-            for (let i in nodeList) {
-                const item = nodeList[i]
-                i = index + i
-                // 若为标题节点
-                if (item.NT == "h") {
-                    list.push({
-                        content: item.CT,
-                        target: i,
-                        level
-                    })
-                } else if (item.NT == "floor") {
-                    // level 最大为 4
-                    const nextLevel = level < 4 ?
-                                      level+1 : level
+        getAnchors() {
+            const anchors = document.querySelectorAll(".heading")
+            let anchorList = []
+            for (let a of anchors) {
+                console.log(a)
+                anchorList.push({
+                    level: a.tagName,
+                    href: a.id,
+                    content: a.innerText
+                })
+            }
 
-                    const li = this.getAnchors(
-                        item.CTS, nextLevel, i
-                    )
-                    list.push(...li)
-                }
-            }
-            // 在最顶层运行回调函数
-            if (level == 1) {
-                callback(list)
-            } else {
-                return list
-            }
+            return anchorList
         },
         close() {
             this.drawerDisabled = true
@@ -82,11 +66,8 @@ export default {
         EventBus.on("open-anchors", () => {
             this.drawerDisabled = false
 
-            this.getAnchors(
-                this.note.CTS, 1, "", (list) => {
-                    this.anchorList = list
-                }
-            )
+            const list = this.getAnchors()
+            this.anchorList = list
         })
     }
 }

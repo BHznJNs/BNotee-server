@@ -45,13 +45,29 @@
             :selected="selected"
             :location="location"
             :parentType="'list'"
-        />
+        >
+            <div
+                class="btn btn-normal tool-btn"
+                @click="addListBlock"
+            >
+                <i class="material-icons">playlist_add</i>
+            </div>
+            <div
+                class="btn btn-normal tool-btn"
+                @click="toggleOrdered"
+            >
+                <i class="material-icons" v-show="isOrdered">format_list_bulleted</i>
+                <i class="material-icons" v-show="!isOrdered">format_list_numbered</i>
+            </div>
+        </block-controls>
     </div>
 </template>
 
 <script>
+import EventBus from "../../common/EventBus"
 import BasicNode from "./basicNode"
 import BlockControls from "./blockControls"
+import getNodeObj from "../mixin/getNodeObj"
 import blockHoverEvent from "../mixin/blockHoverEvent"
 import { h } from "vue"
 
@@ -79,7 +95,35 @@ export default {
         "location", "selected"
     ],
     inject: ["isTouchMode"],
-    mixins: [blockHoverEvent],
+    mixins: [getNodeObj, blockHoverEvent],
+    methods: {
+        addListBlock() {
+            const CTS = this.getThisObj.CTS
+            CTS.push({
+                NT: "list",
+                OL: false,
+                SL: false,
+                CTS: [
+                    {
+                        NT: "li",
+                        CT: "",
+                        CL: "#333",
+                        SL: false
+                    }
+                ]
+            })
+            // 添加历史对象
+            const loc = Object.create(this.location)
+            loc.push(CTS.length - 1)
+            EventBus.emit("add-history", {
+                loc,
+                prop: "IST"
+            })
+        },
+        toggleOrdered() {
+            this.getThisObj.OL = !this.getThisObj.OL
+        }
+    },
     mounted() {
         // 是否为嵌套列表
         const parentNode = this.$el.parentNode
@@ -90,3 +134,16 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    /* tool Button */
+    .tool-btn {
+        width: 10%;
+        min-width: 60px;
+        max-width: 84px;
+        height: 32px;
+        line-height: 32px;
+        margin: 0 40px 0 -20px;
+        background-color: #CFD8DC;
+    }
+</style>

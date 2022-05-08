@@ -1,5 +1,10 @@
 const password = globalThis.Config.password
-function pwChecker(pw) {
+
+/**
+ * @param {number} pw
+ * @returns boolean
+ */
+function checker(pw) {
     return pw == password
 }
-module.exports = pwChecker
+module.exports = checker

@@ -106,6 +106,14 @@ export default {
             .drawer.disabled {
                 transform: translateX(500px);
             }
+            .drawer-view {
+                top: 78px;
+            }
+
+            .closer.circle i {
+                width: 48px !important;
+                height: 48px !important;
+            }
         }
     }
     /* 竖屏 */

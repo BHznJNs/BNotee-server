@@ -25,15 +25,17 @@
             </template>
 
             <textfield-group
+                id="note-textfield-group"
                 ref="textfield"
                 :isAdding="isNodeAdding"
                 @return-node="closeNodeAdder"
             />
             <!-- 新增节点 按键 -->
             <div
-                class="btn btn-normal adder-btn"
+                class="btn-fab adder-btn"
                 :class="{ 'disabled': isNodeAdding }"
                 @click="openNodeAdder"
+                href="#note-textfield-group"
             >
                 <i class="material-icons">add</i>
             </div>
@@ -42,6 +44,7 @@
 </template>
 
 <script>
+import EventBus from "../common/EventBus"
 import FloorBlock from "./note/floorBlock"
 import NodeRenderer from "./note/nodeRenderer"
 import TextfieldGroup from "./textfieldGroup"
@@ -73,15 +76,24 @@ export default {
     methods: {
         // 方法：打开插入文本框
         openNodeAdder() {
+            location.href = "#note-textfield-group"
             this.isNodeAdding = true
             this.$refs.textfield.focus()
         },
         // 方法：关闭插入文本框
         closeNodeAdder(obj) {
             this.isNodeAdding = false
+            const noteCTS = this.note.CTS
             if (obj) {
-                this.note.CTS.push(obj)
+                noteCTS.push(obj)
             }
+
+            // 添加历史对象
+            const loc = [noteCTS.length - 1]
+            EventBus.emit("add-history", {
+                loc,
+                prop: "IST"
+            })
         }
     },
     watch: {
@@ -110,7 +122,7 @@ export default {
         -webkit-border-radius: 15px 0 0 15px;
         background-color: white;
         -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+                box-sizing: border-box;
         transition: height .6s, width 1s, margin-top 1s,
                     border-radius .3s 1s, -webkit-border-radius .3s 1s;
         overflow: hidden;
@@ -138,11 +150,15 @@ export default {
     .note {
         position: relative;
         height: 100%;
-        padding: 1rem 0 1rem 1.2rem;
+        padding: 20px 0 20px 24px;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
         overflow: auto;
+        /* Firefox */
+        scrollbar-width: thin !important;
+        scrollbar-color: #666;
     }
+    
     .fullscreen .note {
         padding-top: 64px;
     }
@@ -150,16 +166,12 @@ export default {
     /* ------ */
 
     .adder-btn {
-        position: sticky;
-        left: 30%;
-        width: 40%;
-        max-width: 160px;
-        height: 36px;
-        line-height: 36px;
-        margin: 0 auto 1rem;
+        color: white !important;
+        background-color: #546E7A;
     }
     .adder-btn.disabled {
         opacity: 0;
+        pointer-events: none;
     }
 
     /* Mask */

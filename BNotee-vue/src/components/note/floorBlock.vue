@@ -21,7 +21,6 @@
                 :selected="item.SL"
                 :level="level + 1"
                 :location="location.concat([index])"
-                @mouse-in-child="onMouseLeave"
             />
             <node-renderer
                 v-else

@@ -38,15 +38,15 @@ a:hover {
     background-color: #EBEBEB;
 }
 
-a[level="1"] {
-    margin-left: 16px;
+a[level="H1"] {
+    margin-left: 20px;
 }
-a[level="2"] {
-    margin-left: 28px;
-}
-a[level="3"] {
+a[level="H2"] {
     margin-left: 40px;
 }
-a[level="4"] {
-    margin-left: 52px;
+a[level="H3"] {
+    margin-left: 60px;
+}
+a[level="H4"] {
+    margin-left: 80px;
 }

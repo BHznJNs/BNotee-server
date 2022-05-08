@@ -1,5 +1,7 @@
 const NoteDB = require("../script/db")
-const checkFile = require("../script/checkData")
+const checkNoteName = require("../script/checkNoteName")
+const checkPassword = require("../script/checkPassword")
+
 const express = require("express")
 const router = express.Router()
 
@@ -21,10 +23,10 @@ router.post("/api/delete", (req, res) => {
     const location = req.body.location
     const fileInfo = req.body.fileInfo
     // 数据校验
-    const isDataEqual = checkFile(location, fileInfo)
+    const isDataEqual = checkNoteName(location, fileInfo)
     if (!isDataEqual) {
         // 若数据不同，发送错误信息
-        let status = Object.assign({}, globalThis.Status[5])
+        let status = Object.create({}, globalThis.Status[5])
         // 并发送服务器端数据
         status.noteList = globalThis.NoteList
         res.send(status)
@@ -39,7 +41,7 @@ router.post("/api/delete", (req, res) => {
         if (!err) {
             noteListEdit(location)
 
-            let status = Object.assign({}, globalThis.Status[0])
+            let status = Object.create({}, globalThis.Status[0])
             status.noteList = globalThis.NoteList
             res.send(status)
         } else {
