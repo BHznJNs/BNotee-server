@@ -32,7 +32,7 @@
         >
             <!-- 表格设置 -->
             <div
-                class="btn btn-normal tool-btn"
+                class="btn btn-normal tool-btn-in-block"
                 :class="{ 'disabled': !selected }"
                 @click="openTableSetter"
             >
@@ -45,7 +45,7 @@
 import EventBus from "../../common/EventBus"
 import TableRow from "./tableRow"
 import BlockControls from "./blockControls"
-import blockHoverEvent from "../mixin/blockHoverEvent"
+import blockHoverEvent from "../mixin/blockHoverEvent.js"
 
 export default {
     props: [
@@ -64,16 +64,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    /* tool Button */
-    .tool-btn {
-        width: 10%;
-        min-width: 60px;
-        max-width: 84px;
-        height: 32px;
-        line-height: 32px;
-        margin: 0 40px 0 -20px;
-        background-color: #CFD8DC;
-    }
-</style>

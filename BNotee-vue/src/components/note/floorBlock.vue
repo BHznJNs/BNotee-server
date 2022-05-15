@@ -44,7 +44,7 @@
 <script>
 import NodeRenderer from "./nodeRenderer"
 import BlockControls from "./blockControls"
-import blockHoverEvent from "../mixin/blockHoverEvent"
+import blockHoverEvent from "../mixin/blockHoverEvent.js"
 
 export default {
     name: "floor-block",

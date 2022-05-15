@@ -1,23 +1,25 @@
 <script>
 import { h } from "vue"
 import getNodeObj from "../mixin/getNodeObj"
+import compiler from "../mixin/compiler"
 import EventBus from "../../common/EventBus"
 
 export default {
     data() {
         return {
             initialContent: this.content,
+            content__: this.content,
             editing: false,
             dbTouch: false
         }
     },
     inject: ["selectedNode"],
+    mixins: [getNodeObj],
     props: [
         "tagName", "content",
         "location", "selected",
         "color"
     ],
-    mixins: [getNodeObj],
     methods: {
         // 方法：右键节点时，触发选择节点事件
         selectEvent() {
@@ -40,6 +42,16 @@ export default {
                 this.selectedNode.type = this.tagName
                 this.getThisObj.SL = true
             }
+        }
+    },
+    computed: {
+        contentToRender() {
+            return compiler(this.content__)
+        }
+    },
+    watch: {
+        content(newVal) {
+            this.content__ = newVal
         }
     },
     render() {
@@ -84,10 +96,12 @@ export default {
                         after: resultContent
                     })
                     this.initialContent = resultContent
+                    this.content__ = resultContent
+                    console.log(this.contentToRender)
                 }
                 this.editing = false
             }
-        }, this.content)
+        }, this.contentToRender)
     }
 }
 </script>

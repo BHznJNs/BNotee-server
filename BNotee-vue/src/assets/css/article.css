@@ -28,7 +28,7 @@ p.selected, li.selected {
 
 .editing {
     padding: 0 .2em;
-    color: black;
+    color: black !important;
     background-color: #F5F5F5;
     cursor: text !important;
 }
@@ -288,3 +288,15 @@ summary {
     margin-top: .4rem;
 }
 /* Details End */
+
+/* Inline Styles */
+.note code {
+    background-color: rgba(0, 0, 0, 0.06);
+    padding: 0 6px;
+    margin: 0 2px;
+    border-radius: 2px;
+}
+.note span {
+    /* 用于淡化文本 */
+    opacity: .75;
+}

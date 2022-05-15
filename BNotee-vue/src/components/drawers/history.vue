@@ -33,6 +33,7 @@
     >
         <history-view
             :list="note.HT"
+            :index="historyIndex"
         />
     </drawer>
 </template>

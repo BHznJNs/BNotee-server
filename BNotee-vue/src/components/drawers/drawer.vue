@@ -51,8 +51,10 @@ export default {
         -webkit-box-shadow: var(--shadow-16);
                 box-shadow: var(--shadow-16);
         background-color: white;
+        contain: layout paint;
         -webkit-overflow-scrolling: touch;
-        transition: transform .9s .3s;
+        -webkit-transition: transform .9s .3s;
+                transition: transform .9s .3s;
     }
     .drawer-view {
         position: absolute;

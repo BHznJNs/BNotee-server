@@ -114,7 +114,6 @@ export default {
                 // 若返回码为 0
                 if (!res.data.code) {
                     EventBus.emit("show-msg", "文件夹创建成功。")
-                    console.log(res.data.status)
                     // 更新笔记列表
                     this.noteList = res.data.noteList
                 } else { // 若返回码不为 0

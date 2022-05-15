@@ -3,6 +3,7 @@
         class="history-block"
         v-for="(item, index) in list"
         :key="item.id"
+        ref="historyBlock"
     >
         <div>
             <span class="history-prop">位置：</span>
@@ -32,7 +33,7 @@
 
 <script>
 export default {
-    props: ["list"],
+    props: ["list", "index"],
     data() {
         return {
             propsDict: {
@@ -48,6 +49,20 @@ export default {
             const index = obj.dataset["index"]
             const historyParent = this.$parent.$parent
             historyParent.doSome(index)
+        }
+    },
+    watch: {
+        index(newVal, oldVal) {
+            const parentNode = this.$el.parentNode
+            const newTargetNode = parentNode.children[newVal]
+            const oldTargetNode = parentNode.children[oldVal]
+
+            if (newVal > -1) {
+                newTargetNode.classList.add("selected")
+            }
+            if (oldVal > -1) {
+                oldTargetNode.classList.remove("selected")
+            }
         }
     }
 }
@@ -66,6 +81,11 @@ export default {
         overflow: hidden;
         -webkit-box-shadow: var(--shadow-2);
                 box-shadow: var(--shadow-2);
+        -webkit-transition: background .3s;
+                transition: background .3s;
+    }
+    .history-block.selected {
+        background-color: #F5F5F5;
     }
 
     /* History Block Content */

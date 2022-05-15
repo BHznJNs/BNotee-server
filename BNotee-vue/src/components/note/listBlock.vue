@@ -47,13 +47,13 @@
             :parentType="'list'"
         >
             <div
-                class="btn btn-normal tool-btn"
+                class="btn btn-normal tool-btn-in-block"
                 @click="addListBlock"
             >
                 <i class="material-icons">playlist_add</i>
             </div>
             <div
-                class="btn btn-normal tool-btn"
+                class="btn btn-normal tool-btn-in-block"
                 @click="toggleOrdered"
             >
                 <i class="material-icons" v-show="isOrdered">format_list_bulleted</i>
@@ -68,7 +68,7 @@ import EventBus from "../../common/EventBus"
 import BasicNode from "./basicNode"
 import BlockControls from "./blockControls"
 import getNodeObj from "../mixin/getNodeObj"
-import blockHoverEvent from "../mixin/blockHoverEvent"
+import blockHoverEvent from "../mixin/blockHoverEvent.js"
 import { h } from "vue"
 
 export default {
@@ -134,16 +134,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-    /* tool Button */
-    .tool-btn {
-        width: 10%;
-        min-width: 60px;
-        max-width: 84px;
-        height: 32px;
-        line-height: 32px;
-        margin: 0 40px 0 -20px;
-        background-color: #CFD8DC;
-    }
-</style>

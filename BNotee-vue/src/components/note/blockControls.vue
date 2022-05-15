@@ -7,7 +7,7 @@
         }"
     >
         <div
-            class="btn btn-normal tool-btn"
+            class="btn btn-normal tool-btn-in-block"
             @click="addNode"
         >
             <i class="material-icons">add</i>
@@ -184,16 +184,6 @@ export default {
 </script>
 
 <style scoped>
-    /* tool Button */
-    .tool-btn {
-        width: 10%;
-        min-width: 60px;
-        max-width: 84px;
-        height: 32px;
-        line-height: 32px;
-        margin: 0 40px 0;
-        background-color: #CFD8DC;
-    }
     /* Controls */
     .controls {
         display: flex;
@@ -216,9 +206,6 @@ export default {
 </style>
 <style>
     .controls.disabled * {
-        display: none;
-    }
-    .touch-mode .tool-btn {
         display: none;
     }
 </style>

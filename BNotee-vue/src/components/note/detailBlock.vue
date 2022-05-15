@@ -46,7 +46,7 @@
 <script>
 import BasicNode from "./basicNode"
 import BlockControls from "./blockControls"
-import blockHoverEvent from "../mixin/blockHoverEvent"
+import blockHoverEvent from "../mixin/blockHoverEvent.js"
 import getNodeObj from "../mixin/getNodeObj"
 import EventBus from "../../common/EventBus"
 

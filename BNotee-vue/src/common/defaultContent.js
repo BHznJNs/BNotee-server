@@ -31,6 +31,12 @@ export default {
             SL: false
         },
         {
+            NT: "p",
+            CT: "内联样式实例（均使用英文符号）：##粗体## ``代码`` __下划线__ //斜体// --删除-- ::淡化::",
+            CL: "#333",
+            SL: false
+        },
+        {
             NT: "floor",
             SL: false,
             CTS: [

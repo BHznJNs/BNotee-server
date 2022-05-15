@@ -19,7 +19,8 @@ export default {
     data() {
         return {
             drawerDisabled: true,
-            anchorList: []
+            anchorList: [],
+            timeout: null
         }
     },
     components: {
@@ -32,7 +33,7 @@ export default {
                         return h(
                             "a", {
                                 level: item.level,
-                                href: "#" + item.target
+                                href: "#" + item.href
                             }, item.content
                         )
                     })
@@ -48,7 +49,6 @@ export default {
             const anchors = document.querySelectorAll(".heading")
             let anchorList = []
             for (let a of anchors) {
-                console.log(a)
                 anchorList.push({
                     level: a.tagName,
                     href: a.id,
@@ -65,9 +65,17 @@ export default {
     mounted() {
         EventBus.on("open-anchors", () => {
             this.drawerDisabled = false
-
-            const list = this.getAnchors()
-            this.anchorList = list
+        })
+        // 当标题元素被创建，获取标题元素
+        EventBus.on("anchor-mounted", () => {
+            // 节流
+            if (this.timeout) {
+                clearTimeout(this.timeout)
+                this.timeout = null
+            }
+            this.timeout = setTimeout(() => {
+                this.anchorList = this.getAnchors()
+            })
         })
     }
 }

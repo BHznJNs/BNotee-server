@@ -99,3 +99,19 @@
         bottom: 24px;
     }
 }
+
+.tool-btn-in-block {
+    width: 10%;
+    min-width: 60px;
+    max-width: 84px;
+    height: 32px;
+    line-height: 32px;
+    margin: 0 40px 0 -20px;
+    background-color: #CFD8DC;
+}
+.tool-btn-in-block:first-child {
+    margin: 0 40px 0;
+}
+.touch-mode .tool-btn-in-block {
+    display: none;
+}
