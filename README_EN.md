@@ -2,14 +2,15 @@
 
 The server version of [BNotee](https://github.com/BHznJNs/BNotee).
 
-[GitPage](https://bhznjns.github.io/BNotee/dist/)
+[GitHubPage](https://bhznjns.github.io/BNotee/dist/)
 
 ## Feature
 
 This is a notebook app that you can deploy the
 server side on you PC and you can edit your notes by any device with blowser(no IE ;>).
 
-Because of my poor skill, you can not edit the style of inline elements by this program. Therefore, I also call it "poor"-text editor.
+<del>Because of my poor skill, you can not edit the style of inline elements by this program.
+Therefore, I also</del> Now it is supported that some inline styles, but I still call it "poor"-text editor OvO.
 
 ## Dependencies
 
@@ -39,6 +40,10 @@ npm start
 - Fullscreen
 - Touch Mode
 - Server Part
+- Inline Styles (Bold, Italic, Code, Deleted, Underlined)
+- Menu
+- Undo & Redo
+
 
 ## Todo
 
