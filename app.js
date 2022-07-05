@@ -1,7 +1,8 @@
-require("./script/readConf")
-require("./script/initFileCreate")
-require("./script/noteList")
-require("./script/status")
+require("./scripts/initFileCreate")
+require("./scripts/global/readConfig")
+require("./scripts/global/readNoteList")
+require("./scripts/global/status")
+require("./scripts/global/db")
 
 const bodyParser = require("body-parser")
 const express = require("express")
@@ -14,19 +15,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // 路由引入 Router Import
-const NoteListRouter = require("./routes/noteList")
-const UploadRouter = require("./routes/upload")
-const DownloadRouter = require("./routes/download")
-const CreateRouter = require("./routes/create")
-const DeleteRouter = require("./routes/delete")
-// 路由 Use Routers
-app.use(NoteListRouter)
-app.use(UploadRouter)
-app.use(DownloadRouter)
-app.use(CreateRouter)
-app.use(DeleteRouter)
+const router = require("./routes/index")
+// 路由设置 Use Routers
+app.use(router)
+// app.get("/hello", (req, res) => {
+//     res.send("Hello World!")
+// })
 
-app.listen(3030, () => {
-    console.log("http://localhost:3030/")
-    console.log("应用正在监听 3030 端口。")
+const port = globalThis.Config.port
+app.listen(port, () => {
+    console.log(`http://localhost:${port}/`)
+    console.log(`应用正在监听 ${port} 端口。`)
 })

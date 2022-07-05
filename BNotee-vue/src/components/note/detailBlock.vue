@@ -28,7 +28,6 @@
                     :tagName="'p'"
                     :content="item.CT"
                     :color="item.CL"
-                    :selected="item.SL"
                     :location="location.concat([index])"
                 />
             </template>
@@ -51,12 +50,17 @@ import getNodeObj from "../mixin/getNodeObj"
 import EventBus from "../../common/EventBus"
 
 export default {
+    data() {
+        return {
+            selected: false
+        }
+    },
     components: {BasicNode, BlockControls},
     mixins: [getNodeObj, blockHoverEvent],
     inject: ["isTouchMode"],
     props: [
         "children", "summary",
-        "location", "selected"
+        "location",
     ],
     methods: {
         finishEdit(e) {

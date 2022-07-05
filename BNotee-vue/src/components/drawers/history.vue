@@ -41,8 +41,8 @@
 <script>
 import EventBus from "../../common/EventBus"
 import getNodeObj from "../mixin/getNodeObj"
-import insertNode from "../mixin/insertNode"
-import deleteNode from "../mixin/deleteNode"
+import insertNode from "../mixin/insertNode.js"
+import deleteNode from "../mixin/deleteNode.js"
 import Drawer from "./drawer"
 import HistoryView from "./historyView"
 

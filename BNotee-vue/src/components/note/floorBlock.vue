@@ -18,7 +18,6 @@
             <floor-block
                 v-if="item.NT == 'floor'"
                 :children="item.CTS"
-                :selected="item.SL"
                 :level="level + 1"
                 :location="location.concat([index])"
             />
@@ -51,9 +50,14 @@ export default {
     components: {
         BlockControls, NodeRenderer
     },
+    data() {
+        return {
+            selected: false,
+        }
+    },
     props: [
         "level", "location",
-        "children", "selected"
+        "children",
     ],
     inject: ["isTouchMode"],
     mixins: [blockHoverEvent]

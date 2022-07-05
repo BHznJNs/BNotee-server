@@ -7,7 +7,6 @@ export default (tagName, content) => {
     // 定义初始对象
     let obj = {
         NT: tagName,
-        SL: false
     }
 
     switch (tagName) {
@@ -24,7 +23,6 @@ export default (tagName, content) => {
                 NT: "h",
                 CT: content,
                 CL: "#333",
-                SL: false
             }]
             break
         case "ol":
@@ -33,7 +31,6 @@ export default (tagName, content) => {
                 NT: "li",
                 CT: content,
                 CL: "#333",
-                SL: false   
             }]
             obj.OL = true
             break
@@ -43,9 +40,12 @@ export default (tagName, content) => {
                 NT: "li",
                 CT: content,
                 CL: "#333",
-                SL: false   
             }]
             obj.OL = false
+            break
+        case "code":
+            obj.LG = content
+            obj.CT = ""
             break
         case "table":
             obj.CTS = [
@@ -59,7 +59,6 @@ export default (tagName, content) => {
                 {
                     CT: "",
                     CL: "#333",
-                    SL: false
                 }
             ]
             break

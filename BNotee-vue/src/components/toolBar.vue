@@ -1,11 +1,26 @@
 <template>
     <div class="toolbar shadow-3">
-        <i class="logo material-icons shadow-2">format_list_bulleted</i> 
+        <info :disabled="!isInfoWindowShow"/>
+        <div class="logo shadow-2">
+            <div
+                class="info-outer"
+                @click="isInfoWindowShow = true"
+                :class="{ disabled: !isInfoIconShow }"
+            >
+                <i class="material-icons">info_outline</i>
+            </div>
+            <div
+                class="logo-outer"
+                @click="logoClick"
+            >
+                <i class="material-icons">format_list_bulleted</i>
+            </div>
+        </div>
         <div class="tools">
             <!-- 插入节点 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !selectedNode.loc || selectedNode.tagName == 'td' }"
+                :class="{ 'disabled': !selectedNode.loc }"
                 @click="openTextfield"
             >
                 <i class="material-icons">add</i>
@@ -13,7 +28,7 @@
             <!-- 删除节点 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !selectedNode.loc || selectedNode.tagName == 'td' }"
+                :class="{ 'disabled': !selectedNode.loc }"
                 @click="toDeleteNode"
             >
                 <i class="material-icons">remove</i>
@@ -70,15 +85,24 @@
 </template>
 
 <script>
+import Info from "./info.vue"
 import getNodeObj from "./mixin/getNodeObj"
-import insertNode from "./mixin/insertNode"
-import deleteNode from "./mixin/deleteNode"
+import insertNode from "./mixin/insertNode.js"
+import deleteNode from "./mixin/deleteNode.js"
 import EventBus from "../common/EventBus"
+import compiler from "../common/compiler"
 import saveAs from "file-saver"
 
 export default {
+    data() {
+        return {
+            isInfoIconShow: false,
+            isInfoWindowShow: false,
+        }
+    },
     props: ["isTouchMode"],
     inject: ["note", "selectedNode"],
+    components: { Info },
     mixins: [getNodeObj, insertNode, deleteNode],
     mounted() {
         const fileUploader = this.$refs.fileUploader
@@ -91,6 +115,9 @@ export default {
             reader.onload = (e) => {
                 let result = e.target.result
                 this.note.CTS = JSON.parse(result)
+                this.$nextTick(() => {
+                    compiler.init()
+                })
             }
         })
 
@@ -100,25 +127,33 @@ export default {
         })
     },
     methods: {
+        // 点击 logo 后一段时间显示 Info 图标
+        logoClick() {
+            this.isInfoIconShow = true
+            setTimeout(() => {
+                this.isInfoIconShow = false
+            }, 3000)
+        },
         // 方法：打开全局输入组
         openTextfield() {
             EventBus.emit("textfield-open", "toolBar")
         },
+        // 插入节点前
         toInsertNode(nodeObj) {
             const loc = this.selectedNode.loc
             this.insertNode(nodeObj, loc)
-
+            // 加入历史编辑
             loc[loc.length - 1] += 1 // 数组最后一个元素值 + 1
             EventBus.emit("add-history", {
                 loc,
                 prop: "IST",
             })
         },
+        // 删除节点前
         toDeleteNode() {
             const loc = this.selectedNode.loc
             const nodeObj = this.deleteNode(loc)
-
-            nodeObj.SL = false
+            // 加入历史编辑
             loc[loc.length - 1] -= 1 // 数组最后一个元素值 - 1
             EventBus.emit("add-history", {
                 loc,
@@ -128,7 +163,7 @@ export default {
         },
         // 方法：触屏模式下，节点取消选择
         nodeCancelSelect() {
-            this.selectedNode.obj.SL = false
+            this.selectedNode.vnode.selected = false
 
             this.selectedNode.loc = null
             this.selectedNode.obj = null
@@ -176,21 +211,40 @@ export default {
                 box-sizing: border-box;
     }
 
-    i.logo {
-        display: block;
+    /* Logo */
+    .logo {
         width: 100%;
+        height: 48px;
         padding: 8px 0;
         margin-bottom: 8px;
         color: white;
         background-color: #333;
-        font-size: 48px;
         text-align: center;
     }
+    .logo i {
+        display: block;
+        font-size: 48px;
+        cursor: pointer;
+    }
+    .logo > .info-outer {
+        max-height: 48px;
+        overflow: hidden;
+        transition: .3s;
+    }
+    .logo .info-outer.disabled {
+        max-height: 0;
+        margin-top: -8px;
+    }
+    .logo .logo-outer {
+        margin-top: 8px;
+    }
+    /* Logo End */
 
+    /* Tools */
     .tools {
         display: flex;
         flex-direction: column;
-        height: calc(100% - 72px - 2rem);
+        height: calc(100% - 72px);
         padding-bottom: 1rem;
         overflow: -moz-scrollbars-none;
         overflow-y: auto;
@@ -202,6 +256,8 @@ export default {
     .tool {
         margin: .6rem auto;
     }
+    /* Tools End */
+
     /* File Uploader */
     i.file input {
         display: none;

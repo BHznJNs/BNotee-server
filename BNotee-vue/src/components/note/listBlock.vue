@@ -23,7 +23,6 @@
                 <list-block
                     v-if="item.NT == 'list'"
                     :isOrdered="item.OL"
-                    :selected="item.SL"
                     :children="item.CTS"
                     :location="location.concat([index])"
                     @mouse-in-child="onMouseLeave"
@@ -33,7 +32,6 @@
                     :tagName="'li'"
                     :content="item.CT"
                     :color="item.CL"
-                    :selected="item.SL"
                     :location="location.concat([index])"
                 />
             </template>
@@ -75,7 +73,8 @@ export default {
     name: "list-block",
     data() {
         return {
-            isNested: null
+            selected: false,
+            isNested: null,
         }
     },
     components: {
@@ -92,7 +91,7 @@ export default {
     },
     props: [
         "children", "isOrdered",
-        "location", "selected"
+        "location",
     ],
     inject: ["isTouchMode"],
     mixins: [getNodeObj, blockHoverEvent],
@@ -102,13 +101,11 @@ export default {
             CTS.push({
                 NT: "list",
                 OL: false,
-                SL: false,
                 CTS: [
                     {
                         NT: "li",
                         CT: "",
                         CL: "#333",
-                        SL: false
                     }
                 ]
             })

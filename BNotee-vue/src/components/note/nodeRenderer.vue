@@ -5,12 +5,9 @@ import BasicNode from "./basicNode"
 import ListBlock from "./listBlock"
 import TableBlock from "./tableBlock"
 import DetailBlock from "./detailBlock"
+import CodeBlock from "./codeBlock.vue"
 
 export default {
-    components: {
-        Heading, BasicNode,
-        ListBlock, TableBlock
-    },
     props: [
         "nodeObj", "index",
         "location", "level"
@@ -18,7 +15,6 @@ export default {
     render() {
         let nodeProps = {
             location: this.location.concat([this.index]),
-            selected: this.nodeObj.SL
         }
         let nodeType
         switch (this.nodeObj.NT) {
@@ -41,6 +37,11 @@ export default {
                 nodeType = DetailBlock
                 nodeProps.summary = this.nodeObj.SUM
                 nodeProps.children = this.nodeObj.CTS
+                break
+            case "code":
+                nodeType = CodeBlock
+                nodeProps.language = this.nodeObj.LG
+                nodeProps.code = this.nodeObj.CT
                 break
             default:
                 nodeType = BasicNode

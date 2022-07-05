@@ -22,20 +22,19 @@
     <fixed-components/>
 
     <anchors/>
+
+    <!-- <window @close="windowDisabled = true" :width="'800px'" :height="'480px'" :disabled="windowDisabled"><h1>This is a window</h1></window> -->
 </template>
 
 <script>
 import { computed } from "vue"
-
 import ToolBar from "./components/toolBar"
 import Note from "./components/note"
 import Anchors from "./components/drawers/anchors"
-
-import Uploader from "./components/uploader/uploader"
 import ControlBalls from "./components/fixed/controlBalls"
+import Uploader from "./components/uploader/uploader"
 import FixedComponents from "./components/fixed/fixedComponents"
 import Msgbar from "./components/fixed/msgbar"
-
 import defaultContent from "./common/defaultContent"
 
 export default {
@@ -49,11 +48,13 @@ export default {
     },
     data() {
         return {
+            windowDisabled: false,
             note: defaultContent,
             selectedNode: {
                 loc: null,
                 obj: null,
-                type: null
+                vnode: null,
+                type: null,
             },
             isDarkMode: false,
             isTouchMode: false,
@@ -93,6 +94,7 @@ export default {
 <style>
     #app {
         background-color: #F5F5F5;
+        overflow: hidden;
     }
 
     .dark-filter {

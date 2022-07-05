@@ -33,7 +33,6 @@
             <!-- 表格设置 -->
             <div
                 class="btn btn-normal tool-btn-in-block"
-                :class="{ 'disabled': !selected }"
                 @click="openTableSetter"
             >
                 <i class="material-icons">grid_on</i>
@@ -48,9 +47,13 @@ import BlockControls from "./blockControls"
 import blockHoverEvent from "../mixin/blockHoverEvent.js"
 
 export default {
+    data() {
+        return {
+            selected: false,
+        }
+    },
     props: [
-        "selected",
-        "children", "location"
+        "children", "location",
     ],
     inject: ["isTouchMode"],
     mixins: [blockHoverEvent],
@@ -60,6 +63,7 @@ export default {
     methods: {
         openTableSetter() {
             EventBus.emit("fixedComponents-open", "tableSetter")
+            EventBus.emit("table-location", this.location)
         }
     }
 }

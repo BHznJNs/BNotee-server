@@ -48,11 +48,11 @@ export default {
             row: 1,
             col: 1,
             targetNode: null,
-            timeout: null
+            targetNodeLoc: [],
+            timeout: null,
         }
     },
     props: ["disabled"],
-    inject: ["selectedNode"],
     mixins: [getNodeObj],
     mounted() {
         const nameDict = {
@@ -60,7 +60,11 @@ export default {
             "COL": "col"
         }
 
-        EventBus.on("table-selected", this.tableGet)
+        EventBus.on("table-location", (loc) => {
+            this.tableGet(loc)
+        })
+
+        // 历史记录 修改 需要
         EventBus.on("table-edit", ({
                 historyObj, resultValue
             }) => {
@@ -81,14 +85,13 @@ export default {
         tableGet(location) {
             // 获取目标表格节点
             if (location) {
+                this.targetNodeLoc = location
                 this.getNodeObj({
                     location,
                     callback: (nodeArray, index) => {
                         this.targetNode = nodeArray[index]
                     }
                 })
-            } else {
-                this.targetNode = this.selectedNode.obj
             }
             
             // 获取目标行数、列数
@@ -96,7 +99,7 @@ export default {
             this.col = this.targetNode.CTS[0].length
         },
         tableSet(toAddHistory) {
-            //    目标节点行数、列数
+            // 目标节点行数、列数 (初始行数、列数)
             const initialRow = this.targetNode.CTS.length
             const initialCol = this.targetNode.CTS[0].length
             // 计算差值
@@ -107,7 +110,7 @@ export default {
             if (this.col != initialCol) {
                 if (toAddHistory) {
                     EventBus.emit("add-history", {
-                        loc: this.selectedNode.loc,
+                        loc: this.targetNodeLoc,
                         prop: "COL",
                         before: initialCol,
                         after: this.col
@@ -136,7 +139,7 @@ export default {
             if (this.row != initialRow) {
                 if (toAddHistory) {
                     EventBus.emit("add-history", {
-                        loc: this.selectedNode.loc,
+                        loc: this.targetNodeLoc.loc,
                         prop: "ROW",
                         before: initialRow,
                         after: this.row
@@ -165,10 +168,12 @@ export default {
     watch: {
         disabled(newVal) {
             if (!newVal) {
-                this.tableGet()
+                // 激活时
                 addEventListener("keydown", this.eventListen)
             } else {
+                // 未激活时
                 this.targetNode = null
+                this.targetNodeLoc = []
                 removeEventListener("keydown", this.eventListen)
             }
         },

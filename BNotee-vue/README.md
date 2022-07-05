@@ -1,4 +1,4 @@
-# BNotee-server
+# BNotee
 
 [Git_Page](https://bhznjns.github.io/BNotee/dist/)
 

@@ -1,57 +1,31 @@
 <script>
 import { h } from "vue"
 import getNodeObj from "../mixin/getNodeObj"
-import compiler from "../mixin/compiler"
+import selectEvent from "../mixin/nodeSelectEvent"
+import compiler from "../../common/compiler"
 import EventBus from "../../common/EventBus"
 
 export default {
     data() {
         return {
-            initialContent: this.content,
-            content__: this.content,
+            selected: false,
+            initialContent: "",
             editing: false,
-            dbTouch: false
+            dbTouch: false,
         }
     },
     inject: ["selectedNode"],
-    mixins: [getNodeObj],
+    mixins: [getNodeObj, selectEvent],
     props: [
         "tagName", "content",
-        "location", "selected",
-        "color"
+        "location", "color",
     ],
-    methods: {
-        // 方法：右键节点时，触发选择节点事件
-        selectEvent() {
-            if (this.selected) {
-                // 关闭全局组件
-                EventBus.emit("fixedComponents-close")
-                // 如果节点已被选择，取消选择
-                this.selectedNode.loc = null
-                this.selectedNode.obj = null
-                this.selectedNode.type = null
-                this.getThisObj.SL = false
-            } else {
-                // 如果已有节点被选择
-                if (this.selectedNode.loc) {
-                    // 选取已被选择节点并取消选择
-                    this.selectedNode.obj.SL = false
-                }
-                this.selectedNode.loc = this.location
-                this.selectedNode.obj = this.getThisObj
-                this.selectedNode.type = this.tagName
-                this.getThisObj.SL = true
-            }
-        }
-    },
-    computed: {
-        contentToRender() {
-            return compiler(this.content__)
-        }
-    },
     watch: {
         content(newVal) {
-            this.content__ = newVal
+            this.$nextTick(() => {
+                const HTMLOutput = compiler.outputer(newVal)
+                this.$el.innerHTML = HTMLOutput
+            })
         }
     },
     render() {
@@ -60,12 +34,16 @@ export default {
             class: {
                 "selected": this.selected,
                 "editing": this.editing,
+                "inline-style": true
             },
             style: {
                 "color": this.color
             },
             onContextmenu: (e) => {
                 e.preventDefault()
+                if (!this.initialContent) {
+                    this.initialContent = e.target.innerText
+                }
                 this.selectEvent()
             },
             onTouchstart: () => {
@@ -80,7 +58,9 @@ export default {
             },
             onClick: (e) => {
                 // 储存修改前节点内容
-                this.initialContent = e.target.innerText
+                if (!this.editing) {
+                    this.initialContent = e.target.innerText
+                }
                 this.editing = true
             },
             onBlur: (e) => {
@@ -96,12 +76,10 @@ export default {
                         after: resultContent
                     })
                     this.initialContent = resultContent
-                    this.content__ = resultContent
-                    console.log(this.contentToRender)
                 }
                 this.editing = false
             }
-        }, this.contentToRender)
+        }, this.content)
     }
 }
 </script>

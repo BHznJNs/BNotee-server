@@ -1,9 +1,11 @@
 <template>
-    <div
-        class="uploader-outer fullscreen-mask"
-        :class="{ disabled }"
+    <window
+        :width="'800px'"
+        :height="'480px'"
+        :disabled="disabled"
+        @close="disabled = true"
     >
-        <div class="uploader shadow-16">
+        <div class="uploader">
             <!-- Closer -->
             <div
                 class="closer shadow-1"
@@ -12,15 +14,10 @@
                 <i class="material-icons">close</i>
             </div>
 
-
             <!-- Note View -->
             <div class="note-view-outer">
                 <div class="note-view">
-                    <uploader-list
-                        @file-select="select"
-                        :list="noteList"
-                        ref="uploaderList"
-                    >
+                    <uploader-list :list="noteList">
                         <textfield-group
                             @return-node="creatFolder"
                             :isAdding="addingFolder"
@@ -76,48 +73,81 @@
             </div>
 
         </div>
-    </div>
+    </window>
 </template>
 
 <script>
+import EventBus from "../../common/EventBus"
+import axios from "axios"
+
+import Window from "../window/window"
 import UploaderList from "./uploaderList"
 import TextfieldGroup from "../textfieldGroup"
-import request from "../mixin/request"
+import getTargetName from "./getTargetName.js"
+import request from "./request.js"
 
 export default {
-    components: { UploaderList, TextfieldGroup },
-    mixins: [request],
+    components: { Window, UploaderList, TextfieldGroup },
+    mixins: [request, getTargetName],
     inject: ["note"],
     data() {
         return {
             disabled: true,
-            selected: null,
+            selected: {
+                loc: [],
+                type: "", // file or folder
+                obj: null, // 上一个被选取的节点
+            },
             addingFolder: false,
             password: "",
-            noteList: []
+            noteList: [],
+        }
+    },
+    // watch: {
+    //     password() {
+    //         console.log(this.getTargetName())
+    //     }
+    // },
+    provide() {
+        return {
+            selectedItem: this.selected
         }
     },
     methods: {
-        select(sld) {
-            this.selected = sld
-        },
         // 方法：打开文件夹输入框
         toCreatFolder() {
             this.addingFolder = true
-            this.$refs.textfieldGroup.focus()
+            this.$nextTick(() => {
+                this.$refs.textfieldGroup.focus()
+            })
+        },
+        show() {
+            this.getTargetName()
         }
     },
-    
+    mounted() {
+        EventBus.on("open-uploader", () => {
+            this.disabled = false
+
+            // 若笔记列表为空
+            if (!this.noteList.length) {
+                const timestamp = new Date().getTime()
+                // 获取笔记列表
+                axios         // 加上时间戳，防止缓存
+                .get(`/note-list?timestamp=${timestamp}`)
+                .then((res) => {
+                    this.noteList = res.data.noteList
+                })
+                .catch(() => {
+                    EventBus.emit("show-msg", "笔记列表获取错误。")
+                })
+            }
+        })
+    }
 }
 </script>
 
 <style scoped>
-    .fullscreen-mask {
-        display: grid;
-        place-items: center;
-        z-index: 1000;
-        cursor: default;
-    }
     /* 横屏 */
     @media screen and (orientation: landscape) {
         .uploader {
@@ -152,18 +182,7 @@ export default {
     .uploader {
         display: grid;
         grid-auto-flow: column;
-
-        width: 800px;
-        max-width: 85vw;
-        height: 400px;
-        max-height: 85vh;
-        z-index: 1001;
-        background-color: #fff;
-        -webkit-box-sizing: border-box;
-                box-sizing: border-box;
-        -webkit-border-radius: 8px;
-                border-radius: 8px;
-        overflow: hidden;
+        height: 100%;
     }
 
     /* Note View */
@@ -180,6 +199,9 @@ export default {
     .closer {
         width: 4rem;
         border-radius: 0 0 8px 0;
+    }
+    .closer i:hover  {
+        background-color: #EEE !important;
     }
     /* Closer End */
 

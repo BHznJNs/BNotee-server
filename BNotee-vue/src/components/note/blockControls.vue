@@ -31,21 +31,20 @@
 
 <script>
 import getNodeObj from "../mixin/getNodeObj"
-import EventBus from "../../common/EventBus"
+import blockControlsAdder from "./blockControlsAdder"
 
 export default {
     data() {
         return {
-            timeout: null
+            timeout: null,
         }
     },
     props: [
-        "isTouchMode",
-        "disabled", "selected",
-        "location", "parentType"
+        "isTouchMode", "parentType",
+        "disabled", "location", "selected",
     ],
     inject: ["selectedNode"],
-    mixins: [getNodeObj],
+    mixins: [getNodeObj, blockControlsAdder],
     methods: {
         _touchstart() {
             this.timeout = setTimeout(() => {
@@ -58,18 +57,18 @@ export default {
         selectEvent() {
             // 返回对象是否 checked
             const checked = this.$refs.checkbox.checked
-            this.getThisObj.SL = checked
+            this.$parent.selected = checked
 
             // 若被选择
             if (checked) {
                 // 如果已有节点被选择
                 if (this.selectedNode.loc) {
                     // 选取已被选择节点并取消选择
-                    this.selectedNode.obj.SL = false
+                    this.selectedNode.vnode.selected = false
                 }
 
                 this.selectedNode.loc = this.location
-                this.selectedNode.obj = this.getThisObj
+                this.selectedNode.vnode = this.$parent
                 this.selectedNode.type = this.parentType
                 // 若父组件为列表
                 if (this.parentType == "list") {
@@ -78,105 +77,10 @@ export default {
                             "nestedList" :
                             "notNestedList"
                 }
-
-                if (this.parentType == "table") {
-                    EventBus.emit("table-selected")
-                }
             } else { // 若取消选择
                 this.selectedNode.loc = null
-                this.selectedNode.obj = null
+                this.selectedNode.vnode = null
                 this.selectedNode.type = null
-            }
-        },
-
-        /* ------------ */
-
-        tableAdder(CTS) {
-            // 获取当前表格行数，列数
-            const rowNum = CTS.length
-            const colNum = CTS[0].length
-            // 新行
-            let newRow = []
-            for (let i = 0; i < colNum; i++) {
-                newRow.push("")
-            }
-            // 插入新行
-            CTS.push(newRow)
-            EventBus.emit("add-history", {
-                loc: this.location,
-                prop: "ROW",
-                before: rowNum,
-                after: rowNum + 1
-            })
-        },
-        detailAdder(CTS) {
-            // 为 详情 组件，直接添加 子段落元素
-            CTS.push({
-                CT: "",
-                CL: "#333",
-                SL: false
-            })
-            // 添加历史对象
-            const loc = Object.create(this.location)
-            loc.push(CTS.length - 1)
-            EventBus.emit("add-history", {
-                loc,
-                prop: "IST"
-            })
-        },
-        listAdder(CTS) {
-            // 为 列表 组件，直接添加 子段落元素
-            CTS.push({
-                NT: "li",
-                CT: "",
-                CL: "#333",
-                SL: false
-            })
-            // 添加历史对象
-            const loc = Object.create(this.location)
-            loc.push(CTS.length - 1)
-            EventBus.emit("add-history", {
-                loc,
-                prop: "IST"
-            })
-        },
-        floorAdder(CTS){
-            // 添加事件监听
-            EventBus.off("textfield-return-" + this.parentType)
-            EventBus.on("textfield-return-" + this.parentType, (obj) => {
-                // 向父元素添加节点
-                if (obj) {
-                    CTS.push(obj)
-                }
-                // 添加历史对象
-                const loc = this.location
-                loc.push(CTS.length - 1)
-                EventBus.emit("add-history", {
-                    loc,
-                    prop: "IST"
-                })
-                // 移除事件监听
-                EventBus.off("textfield-return-" + this.parentType)
-            })
-
-            EventBus.emit("textfield-open", this.parentType)
-        },
-        // 方法：打开全局输入组
-        addNode() {
-            const CTS = this.getThisObj.CTS
-
-            switch (this.parentType) {
-                case "table":
-                    this.tableAdder(CTS)
-                    break
-                case "details":
-                    this.detailAdder(CTS)
-                    break
-                case "list":
-                    this.listAdder(CTS)
-                    break
-                case "floor":
-                    this.floorAdder(CTS)
             }
         }
     }

@@ -10,7 +10,6 @@
             >
                 <floor-block
                     v-if="item.NT == 'floor'"
-                    :selected="item.SL"
                     :children="item.CTS"
                     :level="2"
                     :location="[index]"
@@ -35,7 +34,6 @@
                 class="btn-fab adder-btn"
                 :class="{ 'disabled': isNodeAdding }"
                 @click="openNodeAdder"
-                href="#note-textfield-group"
             >
                 <i class="material-icons">add</i>
             </div>
@@ -44,6 +42,7 @@
 </template>
 
 <script>
+import compiler from "../common/compiler"
 import EventBus from "../common/EventBus"
 import FloorBlock from "./note/floorBlock"
 import NodeRenderer from "./note/nodeRenderer"
@@ -73,12 +72,19 @@ export default {
             }
         })
     },
+    mounted() {
+        this.$nextTick(() => {
+            compiler.init()
+        })
+    },
     methods: {
         // 方法：打开插入文本框
         openNodeAdder() {
             location.href = "#note-textfield-group"
             this.isNodeAdding = true
-            this.$refs.textfield.focus()
+            this.$nextTick(() => {
+                this.$refs.textfield.focus()
+            })
         },
         // 方法：关闭插入文本框
         closeNodeAdder(obj) {
@@ -171,20 +177,6 @@ export default {
     }
     .adder-btn.disabled {
         opacity: 0;
-        pointer-events: none;
-    }
-
-    /* Mask */
-    .mask-outer {
-        position: relative;
-        width: 100%;
-        height: 0;
-        z-index: 1;
-    }
-    .mask {
-        width: 100%;
-        height: .6rem;
-        background-image: linear-gradient(to top, rgba(255, 255, 255, 0), white);
         pointer-events: none;
     }
 </style>
