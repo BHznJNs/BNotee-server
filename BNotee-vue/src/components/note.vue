@@ -32,7 +32,10 @@
             <!-- 新增节点 按键 -->
             <div
                 class="btn-fab adder-btn"
-                :class="{ 'disabled': isNodeAdding }"
+                :class="{
+                    'disabled': isNodeAdding,
+                    'fullscreen': isFullscreen,
+                }"
                 @click="openNodeAdder"
             >
                 <i class="material-icons">add</i>
@@ -174,6 +177,9 @@ export default {
     .adder-btn {
         color: white !important;
         background-color: #546E7A;
+    }
+    .adder-btn.fullscreen {
+        margin-bottom: 60px;
     }
     .adder-btn.disabled {
         opacity: 0;

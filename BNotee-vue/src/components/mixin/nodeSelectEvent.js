@@ -10,6 +10,7 @@ export default {
                 // 如果节点已被选择，取消选择
                 this.selectedNode.loc = null
                 this.selectedNode.vnode = null
+                this.selectedNode.obj = null
                 this.selectedNode.type = null
                 this.selected = false
             } else {
@@ -20,6 +21,7 @@ export default {
                 }
                 this.selectedNode.loc = this.location
                 this.selectedNode.vnode = this
+                this.selectedNode.obj = this.getThisObj
                 this.selectedNode.type = this.tagName
                 this.selected = true
             }

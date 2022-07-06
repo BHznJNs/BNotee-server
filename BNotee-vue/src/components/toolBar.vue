@@ -45,7 +45,7 @@
             <!-- 节点颜色修改 -->
             <div
                 class="tool btn btn-shallow"
-                :class="{ 'disabled': !['basic-node', 'list-item'].includes(selectedNode.type) }"
+                :class="{ 'disabled': !['h1', 'h2', 'h3', 'h4', 'p', 'li'].includes(selectedNode.type) }"
                 @click="openColors"
             >
                 <i class="material-icons">color_lens</i>

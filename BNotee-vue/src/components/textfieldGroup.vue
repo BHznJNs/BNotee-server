@@ -18,6 +18,7 @@
             class="textfield"
             contenteditable="true"
             ref="inputter"
+            @keydown.enter.prevent="enter"
         ></div>
         <div
             class="textfield-closer closer"
@@ -38,6 +39,9 @@ export default {
         focus() {
             const textfield = this.$refs.inputter
             textfield.focus()
+        },
+        enter() {
+            this.closeNodeAdder()
         },
         // 方法：关闭文本框，并将值返回给父节点
         closeNodeAdder() {

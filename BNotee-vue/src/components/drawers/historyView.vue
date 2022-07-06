@@ -24,7 +24,7 @@
         
         <div
             class="btn btn-shallow"
-            @click="doSome($event)"
+            @click="doSome"
         >
             <i class="material-icons" :data-index="index">check</i>
         </div>

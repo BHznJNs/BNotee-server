@@ -52,6 +52,9 @@ function getTargetInfo(location) {
             if (i == 0) {
                 // 顶层目录
                 item = nodeList[index]
+                if (i == (location.length - 2)) {
+                    folder = item
+                }
             } else if (i == (location.length - 2)) {
                 item = item[1][index]
                 folder = item

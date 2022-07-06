@@ -2,6 +2,7 @@
     <highlightjs
         :code="code"
         :language="language"
+        :autodetect="false"
         @focusout="render"
         @contextmenu="select"
         v-once tabindex="0"
@@ -13,6 +14,8 @@ import hljs from "highlight.js/lib/common"
 import hljsVuePlugin from "@highlightjs/vue-plugin"
 import getNodeObj from "../mixin/getNodeObj.vue"
 import nodeSelectEvent from "../mixin/nodeSelectEvent"
+import codeInput from "../mixin/codeInput"
+import EventBus from "../../common/EventBus"
 
 export default {
     data() {
@@ -28,12 +31,29 @@ export default {
     mixins: [getNodeObj, nodeSelectEvent],
     inject: ["selectedNode"],
     props: ["language", "code", "location"],
+    watch: {
+        code(newVal) {
+            this.codeNode.innerHTML = newVal
+            hljs.highlightElement(this.codeNode)
+        }
+    },
     methods: {
         render() {
-            const code = this.codeNode.innerText
-            this.getThisObj.CT = code
-            this.codeNode.innerHTML = code
-            hljs.highlightElement(this.codeNode)
+            let code = this.codeNode.innerText
+            // < &lt; | > &gt;
+            code = code.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            
+            const beforeCode = this.getThisObj.CT
+            const afterCode = code
+            if (afterCode != beforeCode) {
+                EventBus.emit("add-history", {
+                    loc: this.location,
+                    prop: "CT",
+                    before: this.getThisObj.CT,
+                    after: code,
+                })
+                this.getThisObj.CT = code
+            }
         },
         select() {
             this.selectEvent()
@@ -45,35 +65,24 @@ export default {
     mounted() {
         this.codeNode = this.$el.querySelector("code")
         this.codeNode.contentEditable = true
-        this.codeNode.addEventListener("keydown", (e) => {
-            if (e.keyCode == 9) {
-                e.preventDefault()
-                const targetNode = window.getSelection().getRangeAt(0).startContainer
-                const originText = targetNode.textContent
-                if (originText.includes(
-`{
-
-}`)) {
-                    targetNode.textContent = 
-`{
-    
-}`
-                } else {
-                    targetNode.textContent = "    " + originText
-                }
-            }
-        })
+        this.codeNode.addEventListener("keydown", codeInput)
     }
 }
 </script>
 
 <style>
+pre {
+    outline: none;
+}
 pre code.hljs {
     outline: none;
     border-radius: 8px;
-    transition: box-shadow .4s;
+    transition: box-shadow .4s, background-color .2s;
 }
 pre code.hljs.selected {
     box-shadow: var(--shadow-4);
+}
+pre code.hljs:focus {
+    background-color: rgba(0, 0, 0, 0.09)
 }
 </style>
