@@ -69,13 +69,13 @@ export default {
         }
     },
     mounted() {
-        (() => {
+        this.$nextTick(() => {
             // 移动端 防止 软键盘弹起导致 vh 改变
             const initViewportHeight = () => {
                 const meta = document.querySelector("#meta-viewport")
-                let height = 1080
+                let height
                 if (window) {
-                    height = window.innerHeight
+                    height = window.outerHeight
                 }
                 const content = `width=device-width,height=${height},initial-scale=1.0`
                 meta.setAttribute("content", content)
@@ -86,7 +86,7 @@ export default {
             addEventListener("orientationchange", () => {
                 initViewportHeight()
             })
-        })()
+        })
     }
 }
 </script>

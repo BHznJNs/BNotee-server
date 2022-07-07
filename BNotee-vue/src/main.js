@@ -1,4 +1,4 @@
-// JavaScript
+// JavaScript Import
 import { createApp } from "vue"
 import App from "./App.vue"
 // Highlight.js Import

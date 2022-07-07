@@ -103,11 +103,6 @@ export default {
             noteList: [],
         }
     },
-    // watch: {
-    //     password() {
-    //         console.log(this.getTargetName())
-    //     }
-    // },
     provide() {
         return {
             selectedItem: this.selected

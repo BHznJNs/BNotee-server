@@ -37,10 +37,7 @@ export default {
     components: {
         UploaderListFolder,
         UploaderListFile,
-    },
-    // created() {
-    //     console.log(this.list)
-    // }
+    }
 }
 </script>
 <style scoped>
