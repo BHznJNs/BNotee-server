@@ -10,6 +10,7 @@
     LG --> Language
 */
 export default {
+// module.exports = {
     NM: "Example",
     HT: [],
     CTS: [

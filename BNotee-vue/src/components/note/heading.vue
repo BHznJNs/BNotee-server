@@ -16,11 +16,13 @@ export default {
     },
     render() {
         let tagName
+        // 限制，最大为 h5
         if (this.level < 6) {
             tagName = "h" + this.level
         } else {
             tagName = "h5"
         }
+
         return h(BasicNode, {
             tagName: tagName,
             id: this.location.join(""),
