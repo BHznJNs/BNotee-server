@@ -56,10 +56,10 @@ export default {
                     this.dbTouch = false
                 }, 300)
             },
-            onClick: (e) => {
+            onClick: () => {
                 // 储存修改前节点内容
                 if (!this.editing) {
-                    this.initialContent = e.target.innerText
+                    this.initialContent = this.$el.innerText
                 }
                 this.editing = true
             },
