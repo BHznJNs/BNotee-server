@@ -1,18 +1,3 @@
-function indent(str, level) {
-    level -= 1
-    const strArray = str.split("\n")
-    let result = ""
-
-    for (const item of strArray) {
-        if (item != "") {
-            // 如果不是空行
-            result += "  ".repeat(level)
-        }
-        result += item + "\n"
-    }
-    return result
-}
-
 function heading(str, level) {
     let result = ""
     result += "#".repeat(level) + " "
@@ -56,6 +41,10 @@ function exportMd(raw) {
                 break
             case "code":
                 code(item.CT, item.LG)
+                break
+            case "floor":
+                // level += 1
+                floor()
                 break
         }
     }

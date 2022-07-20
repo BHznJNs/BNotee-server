@@ -1,5 +1,5 @@
 const { readFileSync } = require("fs")
-const ini = require("ini")
 
-const conf = readFileSync("config.ini", "utf-8")
-globalThis.Config = ini.parse(conf)
+const conf = readFileSync("config.json", "utf-8")
+const confObj = JSON.parse(conf)
+globalThis.Config = confObj

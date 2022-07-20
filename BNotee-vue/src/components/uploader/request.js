@@ -19,9 +19,13 @@ export default {
                 folderName = this.getTargetName()
             }
 
+            const noteContent = {
+                NM: this.note.NM,
+                CTS: this.note.CTS,
+            }
             // 上传
             axios.put("/api/upload", {
-                note: JSON.stringify(this.note),
+                note: JSON.stringify(noteContent),
                 folderLoc, folderName, noteName,
                 password: this.password,
             }).then((res) => {
