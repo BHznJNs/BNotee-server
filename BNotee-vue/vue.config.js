@@ -1,7 +1,7 @@
 module.exports = {
     publicPath: "/",
     devServer: {
-        proxy: "http://localhost:3030"
+        proxy: "http://localhost:3031"
     },
     pwa: {
         iconPaths: {
