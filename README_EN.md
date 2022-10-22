@@ -40,3 +40,4 @@ npm start
 - Menu
 - Undo & Redo
 - Code Block
+- Markdown Export
