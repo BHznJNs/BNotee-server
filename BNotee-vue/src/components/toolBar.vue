@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import Info from "./info.vue"
+import Info from "./infoView.vue"
 import getNodeObj from "./mixin/getNodeObj"
 import insertNode from "./mixin/insertNode.js"
 import deleteNode from "./mixin/deleteNode.js"

@@ -29,12 +29,12 @@
 <script>
 import { computed } from "vue"
 import ToolBar from "./components/toolBar"
-import Note from "./components/note"
-import Anchors from "./components/drawers/anchors"
+import Note from "./components/noteView"
+import Anchors from "./components/drawers/anchorsView"
 import ControlBalls from "./components/fixed/controlBalls"
-import Uploader from "./components/uploader/uploader"
+import Uploader from "./components/uploader/uploaderView"
 import FixedComponents from "./components/fixed/fixedComponents"
-import Msgbar from "./components/fixed/msgbar"
+import Msgbar from "./components/fixed/messageBar"
 import defaultContent from "./common/defaultContent"
 
 export default {

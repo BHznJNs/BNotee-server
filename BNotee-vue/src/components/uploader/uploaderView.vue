@@ -79,7 +79,7 @@
 import EventBus from "../../common/EventBus"
 import axios from "axios"
 
-import Window from "../window/window"
+import Window from "../window/windowComponent"
 import UploaderList from "./uploaderList"
 import TextfieldGroup from "../textfieldGroup"
 import getTargetName from "./getTargetName.js"

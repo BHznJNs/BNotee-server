@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import Window from "./window/window.vue";
+import Window from "./window/windowComponent"
 
 export default {
     components: { Window },

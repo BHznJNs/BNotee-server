@@ -18,9 +18,9 @@
 
 <script>
 import TextfieldGroupFixed from "./textfieldGroupFixed"
-import Colors from "./colors"
+import Colors from "./colorSelector"
 import TableSetter from "./tableSetter"
-import History from "../drawers/history"
+import History from "../drawers/historyDrawer"
 import EventBus from "../../common/EventBus"
 
 export default {

@@ -12,7 +12,7 @@
 
 <script>
 import { h } from "vue"
-import Drawer from "./drawer"
+import Drawer from "./drawerComponent"
 import EventBus from "../../common/EventBus"
 
 export default {

@@ -1,6 +1,6 @@
 <script>
 import { h } from "vue"
-import Heading from "./heading"
+import Heading from "./headingNode"
 import BasicNode from "./basicNode"
 import AnchorLink from "./anchorLink"
 import ListBlock from "./listBlock"

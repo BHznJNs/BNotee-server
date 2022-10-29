@@ -43,7 +43,7 @@ import EventBus from "../../common/EventBus"
 import getNodeObj from "../mixin/getNodeObj"
 import insertNode from "../mixin/insertNode.js"
 import deleteNode from "../mixin/deleteNode.js"
-import Drawer from "./drawer"
+import Drawer from "./drawerComponent"
 import HistoryView from "./historyView"
 
 export default {
