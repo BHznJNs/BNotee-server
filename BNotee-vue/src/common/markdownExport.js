@@ -35,8 +35,9 @@ function returner(nodeObj, level) {
         case "p":
             result = "  ".repeat(level - 1) + content
             break
+        case "img":
         case "link":
-            result = `[${content}](${nodeObj.HF})`
+            result = `[${content}](${nodeObj.SRC})`
             break
         case "floor":
             isNodeFloorOrList = true
@@ -62,7 +63,7 @@ function returner(nodeObj, level) {
             result = `\`\`\`${nodeObj.LG}\n${nodeObj.CT}\n\`\`\``
             break
         default:
-            console.log("Unknown node type!")
+            console.log("Unknown node type: " + nodeObj.NT)
             return ""
     }
     if (!isNodeFloorOrList) {

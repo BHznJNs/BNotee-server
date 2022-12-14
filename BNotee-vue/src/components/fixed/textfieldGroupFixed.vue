@@ -4,12 +4,19 @@
         class="textfield-group fixed-component fixed"
         v-show="!disabled"
     >
+        <input
+            @change="imgRevFunc"
+            type="file" ref="imgRev"
+            style="display: none"
+        >
         <select
+            @change="focus"
             class="selector" ref="selector"
             v-show="!isFromNestedList"
         >
             <option value="h">标题</option>
             <option value="p">段落</option>
+            <option value="img">图片</option>
             <option value="link">链接</option>
             <option value="hr">割线</option>
             <option value="floor">层次</option>
@@ -29,7 +36,7 @@
         </select>
 
         <div
-            class="textfield" ref="inputer"
+            class="textfield" ref="inputter"
             contenteditable="true"
             @keydown.enter="onEnter"
         ></div>
@@ -46,6 +53,7 @@
 <script>
 import EventBus from "../../common/EventBus"
 import nodeObjReturner from "../../common/nodeObjReturner"
+import imgRevMixin from "../mixin/imgRev"
 
 export default {
     data() {
@@ -55,6 +63,7 @@ export default {
     },
     props: ["disabled"],
     inject: ["selectedNode"],
+    mixins: [imgRevMixin],
     computed: {
         // 判断是否来自嵌套列表或列表内
         isFromNestedList() {
@@ -66,6 +75,9 @@ export default {
     mounted() {
         EventBus.on("textfield-open", (from) => {
             this.commandFrom = from
+            setTimeout(() => {
+                this.focus()
+            }, 600)
         })
     },
     methods: {
@@ -76,21 +88,30 @@ export default {
                 this.closeTextfield()
             }
         },
+        focus() {
+            const selector  = this.$refs.selector
+            const textfield = this.$refs.inputter
+            const imgRev    = this.$refs.imgRev
+            if (selector.value == "img") {
+                imgRev.click()
+            }
+            textfield.focus()
+        },
         // 方法：关闭文本框，并将值返回给父节点
-        closeTextfield() {
+        async closeTextfield() {
             this.$emit("close", "textfieldGroup")
             // 获取对应数据
             const tagName = !this.isFromNestedList ?
                             this.$refs.selector.value :
                             this.$refs.selector4List.value
-            const content = this.$refs.inputer.innerText
+            const content = this.$refs.inputter.innerText
             // 定义返回对象
-            const returnObj = nodeObjReturner(tagName, content)
+            const returnObj = await nodeObjReturner(tagName, content, this)
             // 传值
             EventBus.emit("textfield-return-" + this.commandFrom, returnObj)
 
-            this.$refs.inputer.blur()
-            this.$refs.inputer.innerText = ""
+            this.$refs.inputter.blur()
+            this.$refs.inputter.innerText = ""
         }
     }
 }

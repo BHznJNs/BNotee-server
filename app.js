@@ -18,9 +18,6 @@ app.use(bodyParser.json())
 const router = require("./routes/index")
 // 路由设置 Use Routers
 app.use(router)
-// app.get("/hello", (req, res) => {
-//     res.send("Hello World!")
-// })
 
 const port = globalThis.Config.port
 app.listen(port, () => {

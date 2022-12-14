@@ -1,6 +1,7 @@
 <script>
 import { h } from "vue"
 import Heading from "./headingNode"
+import Image from "./imageNode.vue"
 import BasicNode from "./basicNode"
 import AnchorLink from "./anchorLink"
 import ListBlock from "./listBlock"
@@ -25,12 +26,17 @@ export default {
                 nodeProps.content = this.nodeObj.CT
                 nodeProps.color = this.nodeObj.CL
                 break
+            case "img":
+                nodeType = Image
+                nodeProps.src = this.nodeObj.SRC
+                nodeProps.alt = this.nodeObj.CT
+                break
             case "link":
                 nodeType = AnchorLink
                 nodeProps.tagName = "a"
                 nodeProps.content = this.nodeObj.CT
                 nodeProps.color = this.nodeObj.CL
-                nodeProps.href = this.nodeObj.HF
+                nodeProps.href = this.nodeObj.SRC
                 break
             case "list":
                 nodeType = ListBlock

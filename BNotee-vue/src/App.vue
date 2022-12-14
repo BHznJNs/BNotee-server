@@ -65,7 +65,12 @@ export default {
         return {
             note: this.note,
             selectedNode: this.selectedNode,
-            isTouchMode: computed(() => {return this.isTouchMode})
+            isDarkMode: computed(() => {
+                return this.isDarkMode
+            }),
+            isTouchMode: computed(() => {
+                return this.isTouchMode
+            }),
         }
     },
     mounted() {

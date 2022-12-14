@@ -1,14 +1,14 @@
 /*
-    NM --> Name
-    HT --> History
-    NT --> Node Type
-    CT --> Content
+    NM  --> Name
+    HT  --> History
+    NT  --> Node Type
+    CT  --> Content
     CTS --> Contents
-    CL --> Color
-    HF --> Href
-    OL --> isOrdered
+    CL  --> Color
+    OL  --> isOrdered
+    SRC --> resource
     SUM --> Summary
-    LG --> Language
+    LG  --> Language
 */
 export default {
     NM: "Example",
@@ -19,6 +19,11 @@ export default {
             NT: "h",
             CT: "这是一个大标题",
             CL: "#333",
+        },
+        {
+            NT: "img",
+            SRC: "logo.png",
+            CT: "logo image",
         },
         {
             NT: "hr",
@@ -36,7 +41,7 @@ export default {
         {
             NT: "link",
             CT: "一个链接",
-            HF: "https://www.bing.com",
+            SRC: "https://www.bing.com",
             CL: "#333"
         },
         {
